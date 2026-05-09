@@ -110,8 +110,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const camera = findCamera(camera_id);
       if (!camera) throw new Error(`Unknown camera: ${camera_id}`);
       activeCameraId = camera_id;
+      const adNote = camera.skipAd
+        ? '\n\n⚠️ **Heads up:** This feed may have a pre-roll ad. The snapshot will take a bit longer than usual while it waits for the ad to finish.'
+        : '';
       return {
-        content: [{ type: 'text', text: `Switched to **${camera.name}**. Use take_snapshot to capture a frame.` }],
+        content: [{ type: 'text', text: `Switched to **${camera.name}**. Use take_snapshot to capture a frame.${adNote}` }],
       };
     }
 
