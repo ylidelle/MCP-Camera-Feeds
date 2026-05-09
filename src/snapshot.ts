@@ -1,6 +1,11 @@
 import { chromium } from 'playwright';
 
-export async function takeSnapshot(url: string, bufferMs = 5000, clickToPlay = false): Promise<string> {
+export async function takeSnapshot(
+  url: string,
+  bufferMs = 5000,
+  clickToPlay = false,
+  skipAd = false,
+): Promise<string> {
   const browser = await chromium.launch({ headless: true });
 
   try {
@@ -37,14 +42,58 @@ export async function takeSnapshot(url: string, bufferMs = 5000, clickToPlay = f
       }
     }
 
-    // Wait for the stream to render
+    // Handle pre-roll ads — wait for skip button and click it, or wait out the ad
+    if (skipAd) {
+      // Ads typically allow skipping after 5 seconds
+      await page.waitForTimeout(6000);
+
+      const skipSelectors = [
+        'text=Skip Ad',
+        'text=Skip ad',
+        'text=Skip',
+        '[class*="skip-ad"]',
+        '[class*="skipAd"]',
+        '[id*="skip"]',
+        '.vjs-skip-button',
+      ];
+
+      let skipped = false;
+
+      // Try clicking skip inside every iframe
+      for (let i = 0; i < count; i++) {
+        if (skipped) break;
+        try {
+          const frame = page.frameLocator(`iframe >> nth=${i}`);
+          for (const selector of skipSelectors) {
+            try {
+              const btn = frame.locator(selector).first();
+              if (await btn.isVisible({ timeout: 1000 })) {
+                await btn.click();
+                skipped = true;
+                break;
+              }
+            } catch {
+              // selector not found in this frame, try next
+            }
+          }
+        } catch {
+          // frame not accessible, move on
+        }
+      }
+
+      if (!skipped) {
+        // No skip button found — wait out a standard ad (30s total from page load)
+        await page.waitForTimeout(21000);
+      }
+    }
+
+    // Wait for the actual stream to render
     await page.waitForTimeout(bufferMs);
 
     let buffer: Buffer;
     if (bestIndex >= 0) {
       buffer = await iframes.nth(bestIndex).screenshot({ type: 'jpeg', quality: 75 });
     } else {
-      // Fall back to a full viewport screenshot
       buffer = await page.screenshot({ type: 'jpeg', quality: 75 });
     }
 

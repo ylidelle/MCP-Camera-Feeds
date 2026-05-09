@@ -4,8 +4,9 @@ export interface Camera {
   url: string;
   description: string;
   info: string;
-  bufferMs?: number;    // extra time to wait for stream to load (default 5000ms)
+  bufferMs?: number;     // extra time to wait for stream to load (default 5000ms)
   clickToPlay?: boolean; // whether to click the center of the video iframe to start playback
+  skipAd?: boolean;      // whether to attempt skipping a pre-roll ad
 }
 
 export const CAMERAS: Camera[] = [
@@ -77,7 +78,8 @@ Georgia Aquarium is one of only a handful of facilities in the continental US to
     name: 'African Penguin Cam',
     url: 'https://www.georgiaaquarium.org/webcam/african-penguin-cam/',
     description: 'Georgia Aquarium — African penguin colony, above-water habitat view',
-    bufferMs: 9000,
+    bufferMs: 6000,
+    skipAd: true,
     info: `
 ## African Penguin Cam — Georgia Aquarium
 **Exhibit:** Cold Water Quest — outdoor rocky habitat

@@ -92,7 +92,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const camera = findCamera(activeCameraId);
       if (!camera) throw new Error(`Camera not found: ${activeCameraId}`);
 
-      const imageData = await takeSnapshot(camera.url, camera.bufferMs, camera.clickToPlay);
+      const imageData = await takeSnapshot(camera.url, camera.bufferMs, camera.clickToPlay, camera.skipAd);
 
       return {
         content: [
