@@ -7,6 +7,7 @@ export interface Camera {
   bufferMs?: number;     // extra time to wait for stream to load (default 5000ms)
   clickToPlay?: boolean; // whether to click the center of the video iframe to start playback
   skipAd?: boolean;      // whether to attempt skipping a pre-roll ad
+  switchNote?: string;   // optional note shown when this camera is selected
 }
 
 export const CAMERAS: Camera[] = [
@@ -110,6 +111,7 @@ Georgia Aquarium is one of only a handful of facilities in the continental US to
     description: 'Georgia Aquarium — 1.2 million gallon shark exhibit, underwater view',
     bufferMs: 8000,
     clickToPlay: true,
+    switchNote: '📺 Note: The tagline on this page may say the camera is down — it is not. take_snapshot will still capture a live feed of the sharks.',
     info: `
 ## Sharks! Predators of the Deep — Georgia Aquarium
 **Exhibit:** Sharks! Predators of the Deep (opened October 23, 2020)
