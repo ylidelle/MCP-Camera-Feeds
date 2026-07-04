@@ -38,6 +38,20 @@ npm run build
 claude mcp add aquarium-cameras node "/path/to/dist/index.js"
 ```
 
+### Remote (claude.ai custom connector / Railway)
+The server also ships a Streamable HTTP entry point:
+
+```bash
+node dist/http.js   # listens on $PORT (default 8080)
+```
+
+Set `AUTH_TOKEN` to require the token in the URL — the MCP endpoint becomes
+`https://your-app.up.railway.app/<AUTH_TOKEN>/mcp`. Paste that URL into
+claude.ai → Settings → Connectors → Add custom connector.
+
+Deploying on Railway: the included `Dockerfile` uses the official Playwright
+image (version-matched to `package-lock.json`), so Chromium just works.
+
 ### Claude Desktop
 Add to `claude_desktop_config.json`:
 ```json
