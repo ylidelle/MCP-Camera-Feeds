@@ -1,6 +1,6 @@
-# MCP Camera Feeds 🦈🐧🐋🦦
+# MCP Camera Feeds 🦈🐧🐋🦦🐼
 
-A Model Context Protocol (MCP) server that lets Claude take live snapshots from Georgia Aquarium and Monterey Bay Aquarium webcams, analyze what it sees, and log observations over time.
+A Model Context Protocol (MCP) server that lets Claude take live snapshots from aquarium and zoo webcams (Georgia Aquarium, Monterey Bay Aquarium, San Diego Zoo & Safari Park, Smithsonian National Zoo), analyze what it sees, and log observations over time.
 
 ## Cameras
 
@@ -27,6 +27,31 @@ Live 7 a.m.–7 p.m. Pacific; recorded footage may play off-hours. The bay cam r
 | `mba-aviary` | Aviary Cam | Shorebirds |
 | `mba-spider-crab` | Spider Crab Cam | Deep-sea exhibit |
 | `mba-monterey-bay` | Monterey Bay Cam | The real ocean, 24/7 |
+
+### San Diego Zoo & Safari Park
+Live during California daylight hours. The email-signup wall on some cam pages is bypassed by loading the CamZone player directly.
+
+| ID | Camera |
+|----|--------|
+| `sdz-panda` | Giant Panda Cam (Yun Chuan & Xin Bao) |
+| `sdz-koala` | Koala Cam |
+| `sdz-polar-bear` | Polar Bear Cam |
+| `sdz-penguin` | Penguin Cam (African penguins) |
+| `sdz-hippo` | Hippo Cam |
+| `sdz-ape` | Ape Cam (orangutans & siamangs) |
+| `sdp-tiger` | Tiger Cam (Safari Park) |
+| `sdp-elephant` | Elephant Cam (Safari Park) |
+| `sdp-giraffe` | Giraffe Cam (Safari Park) |
+| `sdp-platypus` | Platypus Cam (Safari Park, reversed light cycle) |
+
+### Smithsonian National Zoo
+
+| ID | Camera |
+|----|--------|
+| `nz-panda` | Giant Panda Cam (Bao Li & Qing Bao) |
+| `nz-lion` | Lion Cam |
+| `nz-naked-mole-rat` | Naked Mole-rat Cam (24/7) |
+| `nz-ferret` | Black-footed Ferret Cam |
 
 ## Tools
 
@@ -88,6 +113,8 @@ Add entries to `src/cameras.ts` — each camera needs an `id`, `name`, `url`, `d
 - `bufferMs` — extra load time for slow streams (default: 5000ms)
 - `clickToPlay` — set `true` if the stream needs a click to start
 - `strategy: 'youtube-embed'` — for pages with a click-to-play YouTube poster that won't start headlessly (e.g. Monterey Bay Aquarium); reads `[data-video-id]` off the page and loads the YouTube embed directly with the cam page as referer
+- `strategy: 'camzone'` — reads the CamZone player iframe src off the page and loads it standalone (San Diego Zoo, sidesteps the email-signup overlay)
+- `strategy: 'video-element'` — force-plays the page's `<video>` elements muted, waits for real frames, screenshots the largest one (Smithsonian National Zoo)
 
 Then `npm run build` and restart Claude.
 

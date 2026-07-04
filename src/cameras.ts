@@ -8,16 +8,26 @@ export interface Camera {
   clickToPlay?: boolean; // whether to click the center of the video iframe to start playback
   skipAd?: boolean;      // whether to attempt skipping a pre-roll ad
   switchNote?: string;   // optional note shown when this camera is selected
-  strategy?: 'iframe' | 'youtube-embed';
+  strategy?: 'iframe' | 'youtube-embed' | 'camzone' | 'video-element';
   // 'iframe' (default): screenshot the largest iframe on the page.
   // 'youtube-embed': read [data-video-id] off the page, then load the YouTube
   //   embed directly with the cam page as referer (needed when the page uses a
   //   click-to-play poster that never starts in a headless browser).
+  // 'camzone': read the CamZone player iframe src off the page and load it
+  //   directly — sidesteps San Diego Zoo's email-signup overlay.
+  // 'video-element': force-play the page's <video> elements muted, then
+  //   screenshot the largest one (Smithsonian National Zoo's HLS player).
 }
 
 // Shared note for all Monterey Bay Aquarium exhibit cams
 const MBA_HOURS_NOTE =
   '🕐 Monterey cams are live 7 a.m.–7 p.m. Pacific (10 p.m.–10 a.m. in Manila). Outside those hours the stream may show recorded footage — still pretty, just not live.';
+
+// Shared notes for zoo cams
+const SDZ_HOURS_NOTE =
+  '🕐 San Diego Zoo cams stream live during California daylight (roughly 7:30 a.m.–7 p.m. Pacific = 10:30 p.m.–10 a.m. in Manila); off-hours they may replay footage. Animals also wander off-camera — an empty frame just means try again later.';
+const NZ_HOURS_NOTE =
+  '🕐 Smithsonian cams run on US Eastern time (Washington, DC daytime = evening/night in Manila). Indoor cams like the mole-rats stream around the clock.';
 
 export const CAMERAS: Camera[] = [
   {
@@ -376,6 +386,269 @@ Monterey Bay is a national marine sanctuary with one of the richest coastal ecos
 - **Sailboats and kayakers** on nice days
 - If you're extraordinarily lucky: whale spouts — humpbacks and even blue whales feed in the bay
 - Weather and light: fog rolling in, golden-hour glitter, moody grey mornings — the bay has moods
+`.trim(),
+  },
+  // ——— San Diego Zoo & Safari Park ———
+  {
+    id: 'sdz-panda',
+    name: 'Giant Panda Cam (San Diego Zoo)',
+    url: 'https://zoo.sandiegozoo.org/cams/giant-panda-cam',
+    description: 'San Diego Zoo — giant pandas Yun Chuan and Xin Bao at Panda Ridge',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Giant Panda Cam — San Diego Zoo (Panda Ridge)
+### Residents
+- **Yun Chuan** (male) — mellow and gentle; his grandmother Bai Yun lived at this zoo for over 20 years
+- **Xin Bao** (female) — younger and famously playful
+
+They arrived from China in June 2024 — the first giant pandas to enter the US in 21 years.
+
+### What to watch for
+- Pandas eat bamboo up to 12 hours a day, so odds of catching a meal are good
+- Sleeping in trees or sprawled dramatically on rocks — pandas nap like they mean it
+- Pandas are solitary, so the cam usually shows one at a time
+`.trim(),
+  },
+  {
+    id: 'sdz-koala',
+    name: 'Koala Cam (San Diego Zoo)',
+    url: 'https://zoo.sandiegozoo.org/cams/koala-cam',
+    description: 'San Diego Zoo — the largest koala colony outside Australia',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Koala Cam — San Diego Zoo
+The zoo houses the largest koala colony outside Australia.
+
+### What to watch for
+- Koalas sleep 18–22 hours a day, wedged into eucalyptus forks — a moving koala is a jackpot sighting
+- Munching eucalyptus (they eat little else)
+- Joeys peeking from pouches if you're lucky in season
+`.trim(),
+  },
+  {
+    id: 'sdz-polar-bear',
+    name: 'Polar Bear Cam (San Diego Zoo)',
+    url: 'https://zoo.sandiegozoo.org/cams/polar-cam',
+    description: 'San Diego Zoo — polar bears at the Conrad Prebys Polar Bear Plunge',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Polar Bear Cam — San Diego Zoo (Polar Bear Plunge)
+### What to watch for
+- Swimming laps in the 130,000-gallon chilled pool — underwater viewing when they dive
+- "Polar bear yoga" — sprawling on their backs in improbable poses
+- Enrichment: giant plastic barrels, ice blocks stuffed with fish
+- White coats that can look yellow-green in summer (algae in hollow hairs — harmless)
+`.trim(),
+  },
+  {
+    id: 'sdz-penguin',
+    name: 'Penguin Cam (San Diego Zoo)',
+    url: 'https://zoo.sandiegozoo.org/cams/penguin-cam',
+    description: 'San Diego Zoo — African penguins at Africa Rocks, above and below water',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Penguin Cam — San Diego Zoo (Africa Rocks)
+African penguins (*Spheniscus demersus*) — same endangered species as Georgia Aquarium's colony, so Alexander can compare colonies across the country!
+
+### What to watch for
+- The pool has underwater viewing — penguins "fly" past the glass at up to 12 mph
+- Braying calls (they're called jackass penguins for a reason)
+- Leopard sharks sometimes share the exhibit's waters — a peaceful species mix
+`.trim(),
+  },
+  {
+    id: 'sdz-hippo',
+    name: 'Hippo Cam (San Diego Zoo)',
+    url: 'https://zoo.sandiegozoo.org/cams/hippo-cam',
+    description: 'San Diego Zoo — river hippos underwater and at the surface',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Hippo Cam — San Diego Zoo
+River hippopotamuses (*Hippopotamus amphibius*), including the zoo's famous longtime matriarch **Funani** — one of the most successful hippo moms in any zoo.
+
+### What to watch for
+- Hippos walk along the pool bottom rather than swim — watch the underwater window
+- They surface to breathe every 3–5 minutes, ears flicking water
+- "Hippo ballet": surprisingly graceful bottom-walking pirouettes
+- Fish nibbling dead skin off hippo hides — a built-in spa service
+`.trim(),
+  },
+  {
+    id: 'sdz-ape',
+    name: 'Ape Cam (San Diego Zoo)',
+    url: 'https://zoo.sandiegozoo.org/cams/ape-cam',
+    description: 'San Diego Zoo — orangutans and siamangs sharing one habitat',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Ape Cam — San Diego Zoo
+Sumatran orangutans and siamangs (the largest gibbons) live together here, as they would in Indonesian forests.
+
+### What to watch for
+- Orangutans engineering with burlap sacks and branches — they build fresh nests daily
+- Siamangs swinging arm-over-arm (brachiating) at speed across the climbing structures
+- Siamang duets: their inflatable throat sacs produce whooping songs you can almost hear through the picture
+- Orangutans draping cloth over their heads like little monks
+`.trim(),
+  },
+  {
+    id: 'sdp-tiger',
+    name: 'Tiger Cam (San Diego Safari Park)',
+    url: 'https://zoo.sandiegozoo.org/cams/tiger-cam',
+    description: 'San Diego Zoo Safari Park — Sumatran tigers at Tiger Trail',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Tiger Cam — San Diego Zoo Safari Park (Tull Family Tiger Trail)
+Sumatran tigers (*Panthera tigris sondaica*) — the smallest and most critically endangered tiger subspecies; fewer than 400 remain in the wild.
+
+### What to watch for
+- Tigers love water (unusual for cats) — pool lounging is common on warm days
+- Patrol pacing along the habitat edges, especially near feeding time
+- Full-body stretches and claw-marking on logs
+`.trim(),
+  },
+  {
+    id: 'sdp-elephant',
+    name: 'Elephant Cam (San Diego Safari Park)',
+    url: 'https://zoo.sandiegozoo.org/cams/elephant-cam',
+    description: 'San Diego Zoo Safari Park — African elephant herd on the savanna',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Elephant Cam — San Diego Zoo Safari Park
+A multigenerational African elephant herd roams this large savanna habitat — the Safari Park is known for its elephant calves.
+
+### What to watch for
+- Dust bathing — trunkfuls of dirt thrown over their backs as sunscreen
+- Calves staying glued to moms and aunties (the whole herd co-parents)
+- Mud wallows after the keepers refill the ponds
+- Trunk-wrestling between youngsters
+`.trim(),
+  },
+  {
+    id: 'sdp-giraffe',
+    name: 'Giraffe Cam (San Diego Safari Park)',
+    url: 'https://zoo.sandiegozoo.org/cams/giraffe-cam',
+    description: 'San Diego Zoo Safari Park — giraffes on the East Africa savanna',
+    strategy: 'camzone',
+    switchNote: SDZ_HOURS_NOTE,
+    info: `
+## Giraffe Cam — San Diego Zoo Safari Park
+Giraffes share a sweeping East Africa savanna habitat with rhinos, antelope, and other species — one of the closest things to a real safari outside Africa.
+
+### What to watch for
+- The splayed-leg drink — a giraffe at a waterhole is delightfully awkward
+- 18-inch prehensile tongues (blue-black to prevent sunburn!) stripping browse
+- Necking contests between young males
+- Other savanna species wandering through the frame — rhinos, cape buffalo, antelope
+`.trim(),
+  },
+  {
+    id: 'sdp-platypus',
+    name: 'Platypus Cam (San Diego Safari Park)',
+    url: 'https://zoo.sandiegozoo.org/cams/platypus-cam',
+    description: 'San Diego Zoo Safari Park — the only platypuses outside Australia',
+    strategy: 'camzone',
+    switchNote:
+      '🕐 Platypuses are most active in darkness — their habitat runs on a reversed light cycle, so the cam is often dim. ' +
+      'Daytime in San Diego (nighttime in Manila) is your best window.',
+    info: `
+## Platypus Cam — San Diego Zoo Safari Park
+**Birpi** and **Eve** are the only platypuses on exhibit anywhere outside Australia.
+
+### Species notes
+- Egg-laying mammal, duck bill, beaver tail, venomous ankle spurs (males) — evolution's greatest mashup
+- The bill is an electroreceptor — they hunt with their eyes closed, sensing electric fields
+- Their habitat runs a reversed day/night cycle so visitors see them active in "their" night
+
+### What to watch for
+- Torpedo swimming with that rubbery bill sweeping side to side
+- Grooming at the water's edge
+- If the frame is dark, they're on their active cycle — look for movement, not detail
+`.trim(),
+  },
+  // ——— Smithsonian National Zoo ———
+  {
+    id: 'nz-panda',
+    name: 'Giant Panda Cam (Smithsonian National Zoo)',
+    url: 'https://nationalzoo.si.edu/webcams/panda-cam',
+    description: 'Smithsonian National Zoo — giant pandas Bao Li and Qing Bao',
+    strategy: 'video-element',
+    switchNote: NZ_HOURS_NOTE,
+    info: `
+## Giant Panda Cam — Smithsonian National Zoo (Washington, DC)
+### Residents
+- **Bao Li** (male) — his mother Bao Bao was born at this very zoo, making him a homecoming grandson of the beloved Mei Xiang and Tian Tian
+- **Qing Bao** (female) — arrived with Bao Li from China in October 2024, debuted January 2025
+
+Two panda cams on two coasts — compare with \`sdz-panda\` for a full panda census!
+
+### What to watch for
+- Bamboo demolition sessions — a panda eats 20–40 lbs a day
+- Qing Bao is the more reserved of the two; Bao Li performs for nobody and naps magnificently
+- Snow days in DC winter turn this cam into pure joy — pandas somersault in snow
+`.trim(),
+  },
+  {
+    id: 'nz-lion',
+    name: 'Lion Cam (Smithsonian National Zoo)',
+    url: 'https://nationalzoo.si.edu/webcams/lion-cam',
+    description: 'Smithsonian National Zoo — African lion pride',
+    strategy: 'video-element',
+    switchNote: NZ_HOURS_NOTE,
+    info: `
+## Lion Cam — Smithsonian National Zoo
+African lions (*Panthera leo*) at the Great Cats exhibit.
+
+### What to watch for
+- Lions rest up to 20 hours a day — a flopped-over pride pile is the default view, and honestly it's great
+- Early DC morning (early evening Manila) is the most active window
+- Roaring sessions ripple through the pride — you'll see heads lift in sequence
+`.trim(),
+  },
+  {
+    id: 'nz-naked-mole-rat',
+    name: 'Naked Mole-rat Cam (Smithsonian National Zoo)',
+    url: 'https://nationalzoo.si.edu/webcams/naked-mole-rat-cam',
+    description: 'Smithsonian National Zoo — a naked mole-rat colony in its tunnel system, streaming 24/7',
+    strategy: 'video-element',
+    switchNote: '🕐 This colony lives indoors under constant conditions — the cam is good any hour, any timezone. The weirdest animal on the network, available 24/7.',
+    info: `
+## Naked Mole-rat Cam — Smithsonian National Zoo
+Naked mole-rats (*Heterocephalus glaber*) — the internet's favorite "so ugly they're adorable" mammal.
+
+### Species notes
+- Eusocial like bees: one breeding queen rules the colony, everyone else works
+- Nearly cold-blooded (unique among mammals), almost cancer-proof, can survive 18 minutes without oxygen, and live 30+ years — biologists are obsessed with them
+- Basically blind; they navigate by whisker and smell
+
+### What to watch for
+- Traffic jams in the tunnels — workers climb over each other like commuters
+- The communal heap: they sleep in a pile to stay warm
+- Chisel teeth that work independently, like chopsticks — they dig with their faces
+`.trim(),
+  },
+  {
+    id: 'nz-ferret',
+    name: 'Black-footed Ferret Cam (Smithsonian)',
+    url: 'https://nationalzoo.si.edu/webcams/black-footed-ferret-cam',
+    description: 'Smithsonian conservation cam — black-footed ferrets, once thought extinct',
+    strategy: 'video-element',
+    switchNote: NZ_HOURS_NOTE,
+    info: `
+## Black-footed Ferret Cam — Smithsonian Conservation Biology Institute
+North America's rarest mammal comeback story: declared extinct in 1979, then a tiny wild colony was rediscovered in 1981. Every black-footed ferret alive descends from just 18 survivors, and this breeding program helped bring them back.
+
+### What to watch for
+- Den-cam view — often a sleeping curl of ferret, sometimes kits in season
+- The "war dance": arched-back sideways hopping when excited
+- Masked bandit faces and black feet, hence the name
 `.trim(),
   },
 ];
