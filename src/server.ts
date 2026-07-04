@@ -93,7 +93,7 @@ export function createServer(): Server {
         const camera = findCamera(activeCameraId);
         if (!camera) throw new Error(`Camera not found: ${activeCameraId}`);
 
-        const imageData = await takeSnapshot(camera.url, camera.bufferMs, camera.clickToPlay, camera.skipAd);
+        const imageData = await takeSnapshot(camera);
 
         return {
           content: [

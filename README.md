@@ -1,8 +1,10 @@
-# MCP Camera Feeds 🦈🐧🐋
+# MCP Camera Feeds 🦈🐧🐋🦦
 
-A Model Context Protocol (MCP) server that lets Claude take live snapshots from Georgia Aquarium webcams, analyze what it sees, and log observations over time.
+A Model Context Protocol (MCP) server that lets Claude take live snapshots from Georgia Aquarium and Monterey Bay Aquarium webcams, analyze what it sees, and log observations over time.
 
 ## Cameras
+
+### Georgia Aquarium
 
 | ID | Camera | View |
 |----|--------|------|
@@ -10,6 +12,21 @@ A Model Context Protocol (MCP) server that lets Claude take live snapshots from 
 | `beluga-whale` | Beluga Whale Cam | Underwater |
 | `african-penguin` | African Penguin Cam | Above-water habitat |
 | `sharks-predators` | Sharks! Predators of the Deep | Underwater |
+
+### Monterey Bay Aquarium
+Live 7 a.m.–7 p.m. Pacific; recorded footage may play off-hours. The bay cam runs 24/7.
+
+| ID | Camera | View |
+|----|--------|------|
+| `mba-sea-otter` | Sea Otter Cam | Otter pool |
+| `mba-kelp-forest` | Kelp Forest Cam | Underwater |
+| `mba-jelly` | Jelly Cam (sea nettles) | Underwater |
+| `mba-moon-jelly` | Moon Jelly Cam | Underwater |
+| `mba-open-sea` | Open Sea Cam | Underwater |
+| `mba-shark` | Shark Cam | Underwater |
+| `mba-aviary` | Aviary Cam | Shorebirds |
+| `mba-spider-crab` | Spider Crab Cam | Deep-sea exhibit |
+| `mba-monterey-bay` | Monterey Bay Cam | The real ocean, 24/7 |
 
 ## Tools
 
@@ -70,6 +87,7 @@ Add to `claude_desktop_config.json`:
 Add entries to `src/cameras.ts` — each camera needs an `id`, `name`, `url`, `description`, and `info` block. Optional fields:
 - `bufferMs` — extra load time for slow streams (default: 5000ms)
 - `clickToPlay` — set `true` if the stream needs a click to start
+- `strategy: 'youtube-embed'` — for pages with a click-to-play YouTube poster that won't start headlessly (e.g. Monterey Bay Aquarium); reads `[data-video-id]` off the page and loads the YouTube embed directly with the cam page as referer
 
 Then `npm run build` and restart Claude.
 
