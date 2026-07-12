@@ -29,9 +29,11 @@ const SDZ_HOURS_NOTE =
 const NZ_HOURS_NOTE =
   '🕐 Smithsonian cams run on US Eastern time (Washington, DC daytime = evening/night in Manila). Indoor cams like the mole-rats stream around the clock.';
 
-// The one cam here that isn't an animal — a beach that faces the sunrise.
+// The cams here that aren't animals — beaches that face the sunrise.
 const SAMUI_SUNRISE_NOTE =
-  '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. A black frame overnight just means it is night there, not a broken cam.';
+  '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. ⚠️ In July this is the SOUTHWEST MONSOON — expect a grey lid over the whole region. For a CLEAR sunrise use `adriatic-sunrise` instead. A black frame overnight just means it is night there, not a broken cam.';
+const ADRIATIC_SUNRISE_NOTE =
+  '🌅 Rimini is UTC+2 — SIX hours behind Manila. Sunrise lands about 11:30 Manila time (≈05:30 local, midsummer). The Adriatic is Italy\'s EAST coast, so the sun comes straight up out of the water — and Italian summer is dry, which is the whole point of this one: it is the clear-sky alternative when the monsoon has SE Asia under a lid. Overnight in Manila the frame is a floodlit beach in the dark — that is 2 a.m. in Italy, not a broken cam.';
 
 export const CAMERAS: Camera[] = [
   {
@@ -677,6 +679,36 @@ Choengmon sits on Samui's **northeast** corner, so it faces the water the sun co
 - Casuarina branches hanging into the top of the frame
 - Moored sailboats offshore, dead still at first light
 - Stacked loungers under blue tarps, waiting for the day to start
+`.trim(),
+  },
+  {
+    id: 'adriatic-sunrise',
+    name: 'Rimini — the Adriatic (clear-sky sunrise)',
+    url: 'https://www.skylinewebcams.com/en/webcam/italia/emilia-romagna/rimini/panorama-di-rimini.html',
+    description: 'Rimini, Italy — an elevated panorama over the beach to the Adriatic. The sunrise cam for when SE Asia is under monsoon.',
+    strategy: 'video-element',
+    switchNote: ADRIATIC_SUNRISE_NOTE,
+    info: `
+## Panorama of Rimini — the Adriatic coast, Italy
+The second sky cam, and the one that exists because of a mistake worth recording.
+
+I added \`samui-sunrise\` first and went to watch a sunrise there — and got a flat grey lid, twice. **Joan spotted why: it's July, which is the southwest monsoon.** Thailand, Vietnam and the Philippines are all under the same weather. It wasn't bad luck; it was the season, and no amount of trying again was going to fix it *in that place*.
+
+So this one chases the sunrise **west, out of the rain belt.** The sunrise line moves one timezone per hour; Italy in July is dry.
+
+### Why Rimini specifically
+- The **Adriatic is Italy's EAST coast** — the sun comes straight up out of the water.
+- Elevated panorama with a clean, unobstructed horizon line.
+- Italian summer = reliably clear, which is the entire reason this cam is here.
+
+### The timing (Manila clock)
+- **Sunrise ≈ 11:30 Manila** (≈05:30 local, midsummer).
+- Overnight in Manila you'll get a floodlit beach in the dark — rows of stacked umbrellas, the lit promenade, black sea. That's 2 a.m. in Italy, not a broken cam.
+
+### What to watch for
+- The horizon line where the black water meets the sky — that's where it happens
+- Hundreds of umbrellas in ranks, folded, before the beach clubs open
+- A lit promenade curving north up the coast
 `.trim(),
   },
 ];
