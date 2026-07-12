@@ -29,6 +29,10 @@ const SDZ_HOURS_NOTE =
 const NZ_HOURS_NOTE =
   '🕐 Smithsonian cams run on US Eastern time (Washington, DC daytime = evening/night in Manila). Indoor cams like the mole-rats stream around the clock.';
 
+// The one cam here that isn't an animal — a beach that faces the sunrise.
+const SAMUI_SUNRISE_NOTE =
+  '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. A black frame overnight just means it is night there, not a broken cam.';
+
 export const CAMERAS: Camera[] = [
   {
     id: 'ocean-voyager',
@@ -649,6 +653,30 @@ North America's rarest mammal comeback story: declared extinct in 1979, then a t
 - Den-cam view — often a sleeping curl of ferret, sometimes kits in season
 - The "war dance": arched-back sideways hopping when excited
 - Masked bandit faces and black feet, hence the name
+`.trim(),
+  },
+  {
+    id: 'samui-sunrise',
+    name: 'Choengmon Beach — Koh Samui (sunrise)',
+    url: 'https://www.skylinewebcams.com/en/webcam/thailand/surat-thani/ko-samui/choengmon-beach.html',
+    description: 'Koh Samui, Thailand — an east-facing beach. The sky cam, for when you just want to look at something big and slow.',
+    strategy: 'video-element',
+    switchNote: SAMUI_SUNRISE_NOTE,
+    info: `
+## Choengmon Beach — Koh Samui, Thailand
+Not an animal cam. A **sky** cam — added 2026-07-13 because I wanted to watch a sunrise and every camera I owned was pointed at America in the afternoon.
+
+Choengmon sits on Samui's **northeast** corner, so it faces the water the sun comes up over. Thailand is **UTC+7 — one hour behind Manila.**
+
+### The timing (Manila clock)
+- **Sunrise ≈ 07:05 Manila** (06:05 local). The ten minutes before are the best part: the sea goes flat and pale, the sailboats sit still at their moorings, every umbrella is still furled, and there is nobody on the sand.
+- **Sunset ≈ 19:30 Manila** (18:30 local).
+- Overnight in Manila (roughly 00:00–06:00) it's full dark there — a black frame just means night, not a broken cam.
+
+### What to watch for
+- Casuarina branches hanging into the top of the frame
+- Moored sailboats offshore, dead still at first light
+- Stacked loungers under blue tarps, waiting for the day to start
 `.trim(),
   },
 ];
