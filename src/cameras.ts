@@ -8,7 +8,7 @@ export interface Camera {
   clickToPlay?: boolean; // whether to click the center of the video iframe to start playback
   skipAd?: boolean;      // whether to attempt skipping a pre-roll ad
   switchNote?: string;   // optional note shown when this camera is selected
-  strategy?: 'iframe' | 'youtube-embed' | 'camzone' | 'video-element';
+  strategy?: 'iframe' | 'youtube-embed' | 'camzone' | 'video-element' | 'still-image';
   // 'iframe' (default): screenshot the largest iframe on the page.
   // 'youtube-embed': read [data-video-id] off the page, then load the YouTube
   //   embed directly with the cam page as referer (needed when the page uses a
@@ -17,6 +17,10 @@ export interface Camera {
   //   directly — sidesteps San Diego Zoo's email-signup overlay.
   // 'video-element': force-play the page's <video> elements muted, then
   //   screenshot the largest one (Smithsonian National Zoo's HLS player).
+  // 'still-image': the cam publishes a periodically-refreshed JPEG rather than
+  //   a stream (government coastal cams). Render the page, screenshot the
+  //   largest <img>. The image URL rotates and direct fetching is blocked, so
+  //   it MUST be re-scraped through a browser every time.
 }
 
 // Shared note for all Monterey Bay Aquarium exhibit cams
@@ -50,6 +54,8 @@ const NZ_HOURS_NOTE =
 // The cams here that aren't animals — beaches that face the sunrise.
 const SAMUI_SUNRISE_NOTE =
   '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. ⚠️ In July this is the SOUTHWEST MONSOON — expect a grey lid over the whole region. For a CLEAR sunrise use `adriatic-sunrise` instead. A black frame overnight just means it is night there, not a broken cam.';
+const PERTH_SUNSET_NOTE =
+  '🌇 The SUNSET cam — faces due WEST over the open Indian Ocean. Perth is UTC+8, the SAME timezone as Manila, so no conversion: sunset lands ≈17:25 Manila in July (midwinter — it runs past 19:00 in December). The disc is low and huge from about 17:00. This is a periodically-refreshed STILL with the timestamp burned into the frame, not live video.';
 const ADRIATIC_SUNRISE_NOTE =
   '🌅 Rimini is UTC+2 — SIX hours behind Manila. Sunrise lands about 11:30 Manila time (≈05:30 local, midsummer). The Adriatic is Italy\'s EAST coast, so the sun comes straight up out of the water — and Italian summer is dry, which is the whole point of this one: it is the clear-sky alternative when the monsoon has SE Asia under a lid. Overnight in Manila the frame is a floodlit beach in the dark — that is 2 a.m. in Italy, not a broken cam.';
 
@@ -727,6 +733,34 @@ So this one chases the sunrise **west, out of the rain belt.** The sunrise line 
 - The horizon line where the black water meets the sky — that's where it happens
 - Hundreds of umbrellas in ranks, folded, before the beach clubs open
 - A lit promenade curving north up the coast
+`.trim(),
+  },
+  {
+    id: 'perth-sunset',
+    name: 'Trigg Point, Perth — sunset over the Indian Ocean',
+    url: 'https://www.transport.wa.gov.au/marine/charts-warnings-current-conditions/coast-cams/trigg-point',
+    description: 'Perth, Western Australia — due WEST over the open Indian Ocean. The sunset cam. Joan asked for a sun with an actual disc.',
+    strategy: 'still-image',
+    switchNote: PERTH_SUNSET_NOTE,
+    info: `
+## Trigg Point — Perth, Western Australia
+The **sunset** cam. Every other sky cam here faces east; this one faces **due west over the open Indian Ocean**, with nothing between the beach and the horizon.
+
+Run by the WA **Department of Transport**, which is exactly why it's here: it's a *government* coastal cam, not a tourism stream, so it doesn't go dark or slap a paywall over the good part. The date and time are burned into the top of every frame — you can always tell when you're looking at.
+
+### Why THIS one (the shortlist, and why the others lost)
+- **Bali (Seminyak)** — perfect on paper: west-facing, dry season, famous sunsets. The cam is **OFFLINE**, frozen on a frame of exactly the shot I wanted. 😤
+- **SkylineWebcams "Perth"** — turns out to point at a **hospital**.
+- **Broome (Cable Beach)** — iconic, but 74% humidity. See the haze lesson above.
+- **Trigg Point** — clean horizon, dry air (~52%), open ocean, government-run. Won.
+
+### The timing (Manila clock)
+- **Perth is UTC+8 — the SAME timezone as Manila.** No conversion. What the clock says here, it says there.
+- **Sunset ≈ 17:25 Manila** in midwinter (July). The disc is low and huge from about **17:00**.
+- Midwinter, so it's an early sunset — in December it slips out past 19:00.
+
+### Note on the picture
+This is a **still**, refreshed every couple of minutes — not live video. So you're looking at a moment, not a movie. That's fine, and honestly it suits a sunset.
 `.trim(),
   },
 ];

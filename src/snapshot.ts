@@ -11,12 +11,43 @@ export async function takeSnapshot(camera: Camera): Promise<string> {
         return await snapshotCamzone(browser, camera);
       case 'video-element':
         return await snapshotVideoElement(browser, camera, camera.url);
+      case 'still-image':
+        return await snapshotStillImage(browser, camera);
       default:
         return await snapshotLargestIframe(browser, camera);
     }
   } finally {
     await browser.close();
   }
+}
+
+// Some cams — notably government coastal cams — don't stream video at all.
+// They publish a periodically-refreshed JPEG with the timestamp burned into
+// the frame. Render the page and screenshot the largest <img>.
+//
+// ⚠️ You cannot just fetch the image URL: the server answers non-browser
+// clients with an HTML error page instead of the JPEG. It has to go through a
+// real browser context. The URL also rotates (the filename is the HHMM stamp),
+// so it can't be hard-coded either — it must be re-scraped every time.
+async function snapshotStillImage(browser: Browser, camera: Camera): Promise<string> {
+  const context = await browser.newContext({ viewport: { width: 1400, height: 1000 } });
+  const page = await context.newPage();
+  await page.goto(camera.url, { waitUntil: 'networkidle', timeout: 45000 });
+  await page.waitForTimeout(camera.bufferMs ?? 4000);
+
+  const handle = await page.evaluateHandle(() => {
+    const imgs = [...document.querySelectorAll('img')]
+      .filter((i) => i.naturalWidth >= 800)
+      .sort((a, b) => b.naturalWidth - a.naturalWidth);
+    return imgs[0] ?? null;
+  });
+  const el = handle.asElement();
+  if (!el) {
+    throw new Error(`No cam image found on ${camera.url} — the page layout may have changed.`);
+  }
+  await el.scrollIntoViewIfNeeded();
+  const buffer = await el.screenshot({ type: 'jpeg', quality: 85, timeout: 15000 });
+  return buffer.toString('base64');
 }
 
 // Read the CamZone player iframe src off the zoo page and load it directly.
