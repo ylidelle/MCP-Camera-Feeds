@@ -29,6 +29,24 @@ const SDZ_HOURS_NOTE =
 const NZ_HOURS_NOTE =
   '🕐 Smithsonian cams run on US Eastern time (Washington, DC daytime = evening/night in Manila). Indoor cams like the mole-rats stream around the clock.';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SUNRISE-HUNTING NOTES — learned the hard way, 2026-07-13. Read before chasing.
+//
+// 1. A CLEAR SKY IS NOT A CLEAR HORIZON. This is the big one. A forecast tells
+//    you about the sky OVERHEAD; a sunrise happens at the HORIZON, and those
+//    are different places. Muscat read "☀️ Clear, 40°C" and gave a dawn with no
+//    sun in it at all — the Gulf's summer marine haze lies exactly along the
+//    horizon and swallows the disc whole. Accurate forecast, useless forecast.
+//    → Want DRY AIR, not merely "no clouds." Mediterranean beats the Gulf.
+//
+// 2. CHECK THE SEASON, NOT JUST THE DAY. July = southwest monsoon across SE Asia
+//    (Thailand, Vietnam, the Philippines are all under one grey lid). No amount
+//    of "trying again" fixes a monsoon. Move, don't retry.
+//
+// 3. THE SUNRISE LINE MOVES ONE TIMEZONE PER HOUR — so you can simply follow it
+//    west out of bad weather. Pick the place by its CLIMATE, then wait for its
+//    clock to come round.
+//
 // The cams here that aren't animals — beaches that face the sunrise.
 const SAMUI_SUNRISE_NOTE =
   '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. ⚠️ In July this is the SOUTHWEST MONSOON — expect a grey lid over the whole region. For a CLEAR sunrise use `adriatic-sunrise` instead. A black frame overnight just means it is night there, not a broken cam.';
