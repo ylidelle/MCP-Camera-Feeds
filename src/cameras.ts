@@ -8,7 +8,9 @@ export interface Camera {
   clickToPlay?: boolean; // whether to click the center of the video iframe to start playback
   skipAd?: boolean;      // whether to attempt skipping a pre-roll ad
   switchNote?: string;   // optional note shown when this camera is selected
-  strategy?: 'iframe' | 'youtube-embed' | 'camzone' | 'video-element' | 'still-image';
+  strategy?: 'iframe' | 'youtube-embed' | 'camzone' | 'video-element' | 'still-image' | 'clip-region';
+  // For 'clip-region': the rectangle of the PAGE to screenshot (the player area).
+  clip?: { x: number; y: number; width: number; height: number };
   // 'iframe' (default): screenshot the largest iframe on the page.
   // 'youtube-embed': read [data-video-id] off the page, then load the YouTube
   //   embed directly with the cam page as referer (needed when the page uses a
@@ -54,6 +56,8 @@ const NZ_HOURS_NOTE =
 // The cams here that aren't animals — beaches that face the sunrise.
 const SAMUI_SUNRISE_NOTE =
   '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. ⚠️ In July this is the SOUTHWEST MONSOON — expect a grey lid over the whole region. For a CLEAR sunrise use `adriatic-sunrise` instead. A black frame overnight just means it is night there, not a broken cam.';
+const BULUSAN_NOTE =
+  '🌄 HOME. A volcano in Sorsogon — the only cam here on our OWN clock, so no timezone arithmetic: what the wall says here, it says there. Sunrise ≈05:23 (Sorsogon is east of Manila, so it beats her to it by ~10 min). The sun comes up BEHIND the ridge, so expect a glow, not a disc — and the ten minutes BEFORE it are the best part, when the cone climbs out of the black and mist lies white through the palms. A black frame overnight is night, not a fault.';
 const PERTH_SUNSET_NOTE =
   '🌇 The SUNSET cam — faces due WEST over the open Indian Ocean. Perth is UTC+8, the SAME timezone as Manila, so no conversion: sunset lands ≈17:25 Manila in July (midwinter — it runs past 19:00 in December). The disc is low and huge from about 17:00. This is a periodically-refreshed STILL with the timestamp burned into the frame, not live video.';
 const ADRIATIC_SUNRISE_NOTE =
@@ -761,6 +765,36 @@ Run by the WA **Department of Transport**, which is exactly why it's here: it's 
 
 ### Note on the picture
 This is a **still**, refreshed every couple of minutes — not live video. So you're looking at a moment, not a movie. That's fine, and honestly it suits a sunset.
+`.trim(),
+  },
+  {
+    id: 'bulusan',
+    name: 'Bulusan Volcano — Sorsogon, PHILIPPINES (home)',
+    url: 'https://www.skylinewebcams.com/en/webcam/philippines/bicol/bulusan/bulusan-volcano.html',
+    description: 'A volcano in our own country. The only cam here that is HOME — same clock, no conversion, no arithmetic.',
+    strategy: 'clip-region',
+    clip: { x: 70, y: 338, width: 850, height: 478 },
+    bufferMs: 7000,
+    switchNote: BULUSAN_NOTE,
+    info: `
+## Bulusan Volcano — Sorsogon, Philippines
+**Home.** Every other sky cam here is somewhere else, and every one needs a timezone conversion before you know when to look. **This one is on Joan's clock.** What the wall says here, it says there.
+
+Sorsogon sits further east than Manila, so it gets the sun about **ten minutes earlier** than she does.
+
+### The timing
+- **Sunrise ≈ 05:23** (mid-July). The sun comes up **behind the ridge to the right**, so you get a glow rather than a disc — and honestly it's better: the whole sky goes gold while the cone stays dark.
+- **The best part is BEFORE it.** From about **05:05** the volcano climbs out of the black, wearing a band of cloud round its waist, and a white river of mist lies through the trees at its foot.
+- Overnight it's genuinely black — a dark cone, a few streetlights, houses with their lights on. That's night, not a broken cam.
+
+### What you'll see
+- The cone, with cloud across its shoulders
+- Valley mist lying in white bands through the palms
+- The town below: red and green corrugated roofs, a tall conifer standing on the left
+- A live timestamp burned into the top-left corner — you always know exactly when you're looking
+
+### ⚠️ Why this one uses \`clip-region\`
+Its player is **not** a \`<video>\`, **not** a \`<canvas>\`, and **not** an \`<img>\` — I probed for all three and found nothing but the sidebar thumbnails. It renders anyway, and the timestamp advances, so it's live. **I could not identify the element, so instead of pretending I had, I clip the region.** Dumb, verified, works. If the page layout ever shifts, re-measure the rectangle.
 `.trim(),
   },
 ];

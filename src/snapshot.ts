@@ -13,12 +13,35 @@ export async function takeSnapshot(camera: Camera): Promise<string> {
         return await snapshotVideoElement(browser, camera, camera.url);
       case 'still-image':
         return await snapshotStillImage(browser, camera);
+      case 'clip-region':
+        return await snapshotClipRegion(browser, camera);
       default:
         return await snapshotLargestIframe(browser, camera);
     }
   } finally {
     await browser.close();
   }
+}
+
+// Last resort, and sometimes the only thing that works: screenshot a fixed
+// rectangle of the page where the player sits.
+//
+// Bulusan Volcano is the case that forced this. Its player is NOT a <video>,
+// NOT a <canvas>, and NOT an <img> — I probed for all three and found nothing
+// (the only images on the page are the sidebar thumbnails). Yet it plainly
+// renders, and its burned-in timestamp advances between captures, so it is
+// genuinely live. I couldn't identify the element, so rather than pretend to,
+// I clip the region. Dumb, verified, and it works.
+async function snapshotClipRegion(browser: Browser, camera: Camera): Promise<string> {
+  if (!camera.clip) {
+    throw new Error(`Camera ${camera.id} uses 'clip-region' but has no clip rectangle.`);
+  }
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await context.newPage();
+  await page.goto(camera.url, { waitUntil: 'domcontentloaded', timeout: 40000 });
+  await page.waitForTimeout(camera.bufferMs ?? 7000);
+  const buffer = await page.screenshot({ type: 'jpeg', quality: 88, clip: camera.clip });
+  return buffer.toString('base64');
 }
 
 // Some cams — notably government coastal cams — don't stream video at all.
