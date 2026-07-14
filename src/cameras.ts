@@ -48,7 +48,7 @@ const KATMAI_NOTE =
 // Public Feedings clip. The `youtubeNear` heading anchor picks the right one.
 const OCTOCAM_URL = 'https://seagrant.oregonstate.edu/visitor-center/exhibits/octocam';
 const OCTOCAM_NOTE =
-  "🐙 Give it a minute before deciding the tank is empty. Giant Pacific octopuses spend most of the day folded into a den or flattened against the glass looking like a rock. The thing you thought was gravel is often the octopus. Oregon is 15h behind Manila — its daytime is Joan's night — but the tank is lit indoors, so it's watchable whenever.";
+  "🐙 ⏰ TIME OF DAY IS EVERYTHING — read this before deciding the cam is broken. GIANT PACIFIC OCTOPUSES ARE NOCTURNAL (the lab's own FAQ says so). Oregon is 15h behind Manila, so OREGON'S NIGHT = MANILA'S AFTERNOON: **look between ~13:00 and ~19:00 Manila** and he should be awake and moving. Look in Manila's MORNING and you are staring into a sleeping animal's bedroom at the sunniest part of his day — an empty-looking tank AND blown-out glare off the visitor-centre skylights. The cam flips to INFRARED at night: greyer, grainier, more visible bubbles — that is night vision working, not a fault. Two angles: if `octocam-north` is a wall of rock, come round to `octocam-south`. And the tank has anemones (and something orange and star-shaped that comes and goes) — a moving animal is not necessarily the octopus.";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SUNRISE-HUNTING NOTES — learned the hard way, 2026-07-13. Read before chasing.
@@ -868,8 +868,24 @@ The north camera sits low and looks **out of the den** toward the room. It's the
 - Colour and texture flickering across the skin — mood, camouflage, or nothing at all
 - Jet propulsion: one shove of water and it's across the tank
 
-### The timing
-Oregon is **UTC−7 — Manila is 15 hours ahead**, so the lab's working day lands on Joan's night shift. It's an indoor tank though, lit and watchable at odd hours.
+### ⏰ THE TIMING — this is the whole thing, and I got it wrong first
+**Giant Pacific octopuses are NOCTURNAL.** The lab's own FAQ says it plainly. So the question is not *"is the cam working"* — it's **"is he awake?"**
+
+Oregon is **UTC−7; Manila is 15 hours ahead.** Therefore:
+
+> **OREGON'S NIGHT = MANILA'S AFTERNOON.**
+> **Look between ~13:00 and ~19:00 Manila.** That's his night, and he should be up and moving.
+
+**Look in Manila's morning and you are staring into a sleeping animal's bedroom at the sunniest part of his day.** I did exactly that — twice — and got an empty tank with glare blazing off the visitor-centre skylights. **I very nearly blamed the camera.** The camera was fine. *(Their FAQ complains about that exact glare: the lens is mounted flush to the tank wall specifically to fight it.)*
+
+**At night the cam switches to INFRARED** — greyer, grainier, bubbles from the seawater pump much more visible. **That is night vision working, not a broken feed.**
+
+### Other things worth knowing (from the lab's FAQ)
+- The octopuses are **donated by local crabbers and fishermen** who catch them by accident, kept **6–12 months**, then **released back into the ocean** to go and mate. He's a guest, not a prisoner.
+- **Enrichment every single day** — sometimes a dismantled Mr Potato Head, sometimes food locked in a jar for him to solve. And *"on a daily basis, someone on-staff is physically interacting with the octopus with gentle touches and strokes."*
+- **He changes colour when he's excited — "such as dinner!"**
+- **Feeding time is the best chance to see him.** (The lab publishes no time; the visitor-hours page is currently a 404.)
+- His tankmates are **sea anemones**, which he leaves alone because they sting. ⚠️ **But something large, orange and star-shaped shows up on the south cam and then vanishes — I called it a sea star and their FAQ mentions only anemones, so ONE OF US IS WRONG and I don't yet know which. A moving animal in frame is not necessarily the octopus.**
 `.trim(),
   },
   {
