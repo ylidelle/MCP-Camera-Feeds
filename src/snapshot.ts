@@ -149,9 +149,21 @@ async function snapshotVideoElement(browser: Browser, camera: Camera, url: strin
   return buffer.toString('base64');
 }
 
-// Read [data-video-id] off the cam page, then load the YouTube embed directly.
-// The embed is restricted to the aquarium's domain, so the cam page URL goes
-// in as referer — without it YouTube answers with player error 153.
+// Find the cam's YouTube video id on the page, then load the embed directly.
+// The embed is restricted to the host's domain, so the cam page URL goes in as
+// referer — without it YouTube answers with player error 153.
+//
+// ⚠️ WHY WE DON'T JUST SCREENSHOT THE PAGE'S OWN YOUTUBE IFRAME: because it
+// gives you the POSTER, not the stream — a still frame with a red play button
+// stamped on it. It looks perfect. Brooks Falls handed me two bears mid-hunt
+// on the lip of the waterfall and it was a photograph of the past. Autoplay is
+// blocked until the video is MUTED, which the host's own embed often isn't. So
+// we re-load the embed ourselves with mute=1 and wait for frames to actually
+// advance. Never trust a pretty frame you didn't watch move. (2026-07-15)
+//
+// Two ways to find the id, in order:
+//   1. [data-video-id] — how the aquarium cams mark it up.
+//   2. the src of any YouTube <iframe> — how explore.org and Oregon State do it.
 async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<string> {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 },
@@ -159,13 +171,20 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
   });
   const page = await context.newPage();
 
-  await page.goto(camera.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  const videoId = await page
-    .locator('[data-video-id]')
-    .first()
-    .getAttribute('data-video-id', { timeout: 10000 });
+  await page.goto(camera.url, { waitUntil: 'domcontentloaded', timeout: 40000 });
+  await page.waitForTimeout(camera.bufferMs ?? 5000); // SPA players mount late
+
+  const videoId = await page.evaluate(() => {
+    const tagged = document.querySelector('[data-video-id]')?.getAttribute('data-video-id');
+    if (tagged) return tagged;
+    for (const f of document.querySelectorAll('iframe')) {
+      const m = (f.getAttribute('src') ?? '').match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/);
+      if (m) return m[1];
+    }
+    return null;
+  });
   if (!videoId) {
-    throw new Error(`No [data-video-id] found on ${camera.url} — the cam page layout may have changed.`);
+    throw new Error(`No YouTube video id found on ${camera.url} — the cam page layout may have changed.`);
   }
 
   await page.goto(
@@ -175,6 +194,19 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
 
   const video = page.locator('video').first();
   await video.waitFor({ state: 'visible', timeout: 20000 });
+
+  // Wait for the stream to actually RENDER FRAMES. A visible <video> can still
+  // be a black box or a spinner; currentTime advancing is the only real proof.
+  await page
+    .waitForFunction(
+      () => {
+        const v = document.querySelector('video');
+        return !!v && !v.paused && v.readyState >= 3 && v.currentTime > 1;
+      },
+      { timeout: 30000 }
+    )
+    .catch(() => {}); // stalled cam still gets a best-effort frame
+
   await page.waitForTimeout(camera.bufferMs ?? 8000);
 
   const buffer = await video.screenshot({ type: 'jpeg', quality: 75, timeout: 15000 });

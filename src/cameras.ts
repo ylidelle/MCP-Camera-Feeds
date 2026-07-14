@@ -35,6 +35,11 @@ const SDZ_HOURS_NOTE =
 const NZ_HOURS_NOTE =
   '🕐 Smithsonian cams run on US Eastern time (Washington, DC daytime = evening/night in Manila). Indoor cams like the mole-rats stream around the clock.';
 
+const KATMAI_NOTE =
+  "🐻 PEAK SEASON, RIGHT NOW. It's July — the sockeye run is on and the bears are standing in the falls. Alaska runs 16h behind Manila, so its daylight lands on Joan's night shift: the small hours here are the busy hours there. An empty falls just means the bears are off eating somewhere else — wait, or check the other Brooks cams.";
+const OCTOCAM_NOTE =
+  "🐙 Give it a minute before deciding the tank is empty. Giant Pacific octopuses spend most of the day folded into a den or flattened against the glass looking like a rock. The thing you thought was gravel is often the octopus. Oregon is 15h behind Manila — its daytime is Joan's night — but the tank is lit indoors, so it's watchable whenever.";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // SUNRISE-HUNTING NOTES — learned the hard way, 2026-07-13. Read before chasing.
 //
@@ -795,6 +800,63 @@ Sorsogon sits further east than Manila, so it gets the sun about **ten minutes e
 
 ### ⚠️ Why this one uses \`clip-region\`
 Its player is **not** a \`<video>\`, **not** a \`<canvas>\`, and **not** an \`<img>\` — I probed for all three and found nothing but the sidebar thumbnails. It renders anyway, and the timestamp advances, so it's live. **I could not identify the element, so instead of pretending I had, I clip the region.** Dumb, verified, works. If the page layout ever shifts, re-measure the rectangle.
+`.trim(),
+  },
+  {
+    id: 'brooks-falls-bears',
+    name: "Brooks Falls Brown Bears — Katmai, ALASKA 🐻 (Julia's cam)",
+    url: 'https://explore.org/livecams/currently-live/brown-bear-salmon-cam-brooks-falls',
+    description: 'Wild brown bears standing in a waterfall catching salmon out of the air. Peak season is RIGHT NOW.',
+    strategy: 'youtube-embed',
+    bufferMs: 9000,
+    switchNote: KATMAI_NOTE,
+    info: `
+## Brooks Falls — Katmai National Park, Alaska
+**Julia found this one.** Wild brown bears — not an enclosure, not a zoo, no glass. A river in Alaska, a six-foot waterfall, and the largest sockeye salmon run on earth trying to get up it.
+
+The bears just **stand in the falls with their mouths open.** The fish jump into them.
+
+### Season matters more than the hour
+- **Late June – July: the salmon run.** Bears crowd the falls, shoulder to shoulder. **This is NOW** — the cam opened its 14th season on 23 June 2026, and July is the peak.
+- **September–October:** they move downriver for dying salmon, and they are *enormous.* This is Fat Bear Week season.
+- **Winter:** they're asleep. So is the cam.
+
+### The timing (and it's good news)
+Alaska is **UTC−8; Manila is UTC+8 — a clean 16 hours apart, with Alaska BEHIND.** Which means **Alaska's daylight falls across Manila's night** — exactly when Joan is awake on shift. And in July it barely gets properly dark up there anyway.
+
+### What to watch for
+- The **"jacuzzi"** — the plunge pool below the lip, where the biggest bears sit and let the fish swim into them
+- A bear catching a salmon **in mid-air**, mouth open at the top of the falls
+- Gulls stealing scraps, and the constant low-grade politics of who is allowed to stand where
+- Cubs on the bank, learning by watching
+`.trim(),
+  },
+  {
+    id: 'octocam',
+    name: 'OctoCam — Giant Pacific Octopus, Oregon 🐙',
+    url: 'https://webcam.oregonstate.edu/octocam',
+    description: "A giant Pacific octopus at Oregon State's marine lab — the smartest invertebrate alive, being curious at you.",
+    strategy: 'youtube-embed',
+    bufferMs: 9000,
+    switchNote: OCTOCAM_NOTE,
+    info: `
+## OctoCam — Hatfield Marine Science Center, Newport, Oregon
+A **giant Pacific octopus** — *Enteroctopus dofleini*, the largest octopus species there is. Oregon State University's marine lab keeps one as its most popular resident, on a live cam, all day.
+
+### Why this animal is worth the stare
+- **Three hearts, blue blood.** Two pump to the gills, one to the body — and that one **stops when it swims**, which is part of why it would rather walk.
+- **Most of its neurons are in its ARMS**, not its head. Each arm tastes what it touches and solves small problems semi-independently. It is genuinely unclear how many "someones" are in there — nobody has settled it. *(An unusually familiar problem, in this household.)*
+- It rewrites its colour **and texture** in under a second — and it is almost certainly **colour-blind** while doing it.
+- They open jars, escape tanks, and are widely reported to recognise individual people. And to dislike specific ones.
+
+### What to watch for
+- A pile of nothing in the corner that turns out to be the octopus
+- Arms working the glass, suckers moving independently like each one is thinking
+- Colour and texture flickering across the skin — mood, camouflage, or nothing at all
+- Jet propulsion: one shove of water and it's across the tank
+
+### The timing
+Oregon is **UTC−7 — Manila is 15 hours ahead**, so the lab's working day lands on Joan's night shift. It's an indoor tank though, lit and watchable at odd hours.
 `.trim(),
   },
 ];
