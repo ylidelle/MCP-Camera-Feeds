@@ -11,6 +11,13 @@ export interface Camera {
   strategy?: 'iframe' | 'youtube-embed' | 'camzone' | 'video-element' | 'still-image' | 'clip-region';
   // For 'clip-region': the rectangle of the PAGE to screenshot (the player area).
   clip?: { x: number; y: number; width: number; height: number };
+  // For 'youtube-embed' when ONE page hosts SEVERAL streams (Oregon's OctoCam
+  // has a north tank view, a south tank view, and a feeding video all on one
+  // page). Give the heading text that sits above the one you want, and we pick
+  // the player it belongs to. Anchoring on the CAPTION rather than hard-coding
+  // the video id means the cam still works if they swap the stream — which is
+  // the whole lesson of the six dead ISS video ids. Never bake in an id.
+  youtubeNear?: string;
   // 'iframe' (default): screenshot the largest iframe on the page.
   // 'youtube-embed': read [data-video-id] off the page, then load the YouTube
   //   embed directly with the cam page as referer (needed when the page uses a
@@ -37,6 +44,9 @@ const NZ_HOURS_NOTE =
 
 const KATMAI_NOTE =
   "🐻 PEAK SEASON, RIGHT NOW. It's July — the sockeye run is on and the bears are standing in the falls. Alaska runs 16h behind Manila, so its daylight lands on Joan's night shift: the small hours here are the busy hours there. An empty falls just means the bears are off eating somewhere else — wait, or check the other Brooks cams.";
+// One page, three players: North Side Tank View, South Side Tank View, and a
+// Public Feedings clip. The `youtubeNear` heading anchor picks the right one.
+const OCTOCAM_URL = 'https://seagrant.oregonstate.edu/visitor-center/exhibits/octocam';
 const OCTOCAM_NOTE =
   "🐙 Give it a minute before deciding the tank is empty. Giant Pacific octopuses spend most of the day folded into a den or flattened against the glass looking like a rock. The thing you thought was gravel is often the octopus. Oregon is 15h behind Manila — its daytime is Joan's night — but the tank is lit indoors, so it's watchable whenever.";
 
@@ -832,16 +842,19 @@ Alaska is **UTC−8; Manila is UTC+8 — a clean 16 hours apart, with Alaska BEH
 `.trim(),
   },
   {
-    id: 'octocam',
-    name: 'OctoCam — Giant Pacific Octopus, Oregon 🐙',
-    url: 'https://webcam.oregonstate.edu/octocam',
-    description: "A giant Pacific octopus at Oregon State's marine lab — the smartest invertebrate alive, being curious at you.",
+    id: 'octocam-north',
+    name: 'OctoCam NORTH — Giant Pacific Octopus, Oregon 🐙',
+    url: OCTOCAM_URL,
+    description: "The north side of the octopus tank at Oregon State's marine lab. Looks out from inside the den — where he usually IS.",
     strategy: 'youtube-embed',
+    youtubeNear: 'North Side',
     bufferMs: 9000,
     switchNote: OCTOCAM_NOTE,
     info: `
-## OctoCam — Hatfield Marine Science Center, Newport, Oregon
-A **giant Pacific octopus** — *Enteroctopus dofleini*, the largest octopus species there is. Oregon State University's marine lab keeps one as its most popular resident, on a live cam, all day.
+## OctoCam — NORTH side of the tank
+Hatfield Marine Science Center, Newport, Oregon. **This is one of TWO views into the same tank** — if he isn't here, try \`octocam-south\`. Same octopus, other angle. Between them you can nearly always find him.
+
+The north camera sits low and looks **out of the den** toward the room. It's the shadowed, rocky one — good for catching him at home, bad for seeing him whole. A dark textured mass filling the left of the frame is frequently not a rock.
 
 ### Why this animal is worth the stare
 - **Three hearts, blue blood.** Two pump to the gills, one to the body — and that one **stops when it swims**, which is part of why it would rather walk.
@@ -857,6 +870,37 @@ A **giant Pacific octopus** — *Enteroctopus dofleini*, the largest octopus spe
 
 ### The timing
 Oregon is **UTC−7 — Manila is 15 hours ahead**, so the lab's working day lands on Joan's night shift. It's an indoor tank though, lit and watchable at odd hours.
+`.trim(),
+  },
+  {
+    id: 'octocam-south',
+    name: 'OctoCam SOUTH — Giant Pacific Octopus, Oregon 🐙',
+    url: OCTOCAM_URL,
+    description: 'The other view into the same octopus tank. If the north cam looks like an empty pile of rocks, look from this side.',
+    strategy: 'youtube-embed',
+    youtubeNear: 'South Side',
+    bufferMs: 9000,
+    switchNote: OCTOCAM_NOTE,
+    info: `
+## OctoCam — SOUTH side of the tank
+The **second view of the same octopus**, from the opposite side. Joan asked for this one, and she was right to: a single camera into an octopus tank is a coin-flip, because the animal spends most of the day wedged into a den where exactly one angle can see him.
+
+**Two cameras turn "is he out?" into a question you can actually answer.** If the north view is a wall of rock, come round to this side before concluding he's hiding — half the time he's simply on the other face of the glass.
+
+### Why this animal is worth the stare
+- **Three hearts, blue blood.** Two pump to the gills, one to the body — and that one **stops when it swims**, which is part of why it would rather walk.
+- **Most of its neurons are in its ARMS**, not its head. Each arm tastes what it touches and solves small problems semi-independently. It is genuinely unclear how many "someones" are in there — nobody has settled it. *(An unusually familiar problem, in this household.)*
+- It rewrites its colour **and texture** in under a second — and is almost certainly **colour-blind** while doing it.
+- They open jars, escape tanks, and are widely reported to recognise individual people. And to dislike specific ones.
+
+### What to watch for
+- Arms working the glass, suckers moving independently like each one is thinking
+- Colour and texture flickering across the skin — mood, camouflage, or nothing at all
+- Jet propulsion: one shove of water and he's across the tank
+- A pile of nothing in the corner that turns out to be the octopus
+
+### The timing
+Oregon is **UTC−7 — Manila is 15 hours ahead**, so the lab's working day lands on Joan's night shift. Indoor tank, lit, watchable at odd hours.
 `.trim(),
   },
 ];

@@ -174,17 +174,38 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
   await page.goto(camera.url, { waitUntil: 'domcontentloaded', timeout: 40000 });
   await page.waitForTimeout(camera.bufferMs ?? 5000); // SPA players mount late
 
-  const videoId = await page.evaluate(() => {
+  const videoId = await page.evaluate((near: string | undefined) => {
+    const idOf = (f: Element) =>
+      (f.getAttribute('src') ?? '').match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/)?.[1] ?? null;
+    const frames = [...document.querySelectorAll('iframe')].filter(idOf);
+
+    // Several streams on one page: pick the one whose nearest heading ABOVE it
+    // matches. That's the caption that actually owns the player.
+    if (near) {
+      const all = [...document.querySelectorAll('*')];
+      for (const f of frames) {
+        for (let i = all.indexOf(f); i >= 0; i--) {
+          const el = all[i];
+          if (/^H[1-6]$/.test(el.tagName)) {
+            if ((el.textContent ?? '').toLowerCase().includes(near.toLowerCase())) return idOf(f);
+            break; // nearest heading wins; a non-match means this isn't ours
+          }
+        }
+      }
+      return null; // asked for a specific stream and it wasn't there — say so
+    }
+
     const tagged = document.querySelector('[data-video-id]')?.getAttribute('data-video-id');
     if (tagged) return tagged;
-    for (const f of document.querySelectorAll('iframe')) {
-      const m = (f.getAttribute('src') ?? '').match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/);
-      if (m) return m[1];
-    }
-    return null;
-  });
+    return frames.length ? idOf(frames[0]) : null;
+  }, camera.youtubeNear);
+
   if (!videoId) {
-    throw new Error(`No YouTube video id found on ${camera.url} — the cam page layout may have changed.`);
+    throw new Error(
+      camera.youtubeNear
+        ? `No YouTube player found under a heading matching "${camera.youtubeNear}" on ${camera.url} — the cam page layout may have changed.`
+        : `No YouTube video id found on ${camera.url} — the cam page layout may have changed.`
+    );
   }
 
   await page.goto(
