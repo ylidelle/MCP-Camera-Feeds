@@ -842,6 +842,86 @@ Alaska is **UTC−8; Manila is UTC+8 — a clean 16 hours apart, with Alaska BEH
 `.trim(),
   },
   {
+    id: 'brooks-falls-low',
+    name: 'Brooks Falls LOW View — Katmai, ALASKA 🐻 (the jacuzzi cam)',
+    url: 'https://explore.org/livecams/three-bears/brooks-falls-brown-bears-low',
+    description: "The second angle on the falls — low and close, pointed at the plunge pool where the biggest bears sit. Joan's requested bear expansion, 2026-07-28.",
+    strategy: 'youtube-embed',
+    bufferMs: 9000,
+    switchNote: KATMAI_NOTE,
+    info: `
+## Brooks Falls — LOW view
+Same waterfall as \`brooks-falls-bears\`, different truth: this camera sits **low and close**, aimed at the **plunge pool ("the jacuzzi")** below the lip — where the dominant bears sit half-submerged and let the river deliver fish into them.
+
+### What to watch for
+- The **biggest** bears — the jacuzzi is prime real estate and rank decides who sits in it
+- Salmon literally swimming into a waiting mouth
+- Close-up wet fur, steam, and the sheer size of an adult brown bear at fish-level
+- If the falls are empty here, the bears may be upstream in frame on the high cam — the two views cover each other
+`.trim(),
+  },
+  {
+    id: 'brooks-lower-river',
+    name: 'Lower Brooks River Bears — Katmai, ALASKA 🐻',
+    url: 'https://explore.org/livecams/brown-bears/brown-bear-salmon-cam-lower-river',
+    description: 'The wide, meandering lower river — mothers with cubs fish here, away from the big males at the falls.',
+    strategy: 'youtube-embed',
+    bufferMs: 9000,
+    switchNote: KATMAI_NOTE,
+    info: `
+## Lower Brooks River
+Mounted on the **west end of the lower-river wildlife platform**, looking up- and downstream across the meanders. This is the **family neighborhood**: mothers with cubs fish here specifically because the dominant males claim the falls — distance from the big boys IS the safety feature.
+
+### What to watch for
+- **Sows with spring cubs** — the cubs wait on the bank complaining audibly while mom fishes
+- Snorkeling bears drifting with the current, face-down like giant furry masks
+- Bears walking the gravel bars at low water
+- Late season (Sept–Oct): this stretch fills with enormous pre-hibernation bears chasing dying salmon
+`.trim(),
+  },
+  {
+    id: 'brooks-river-watch',
+    name: "River Watch — Brooks River mouth & Naknek Lake, ALASKA 🐻 (Joan's \"Kat's River View\")",
+    url: 'https://explore.org/livecams/three-bears/river-watch-brown-bear-salmon-cams',
+    description: 'East end of the lower-river platform: the river mouth opening into huge Naknek Lake. The scenic one.',
+    strategy: 'youtube-embed',
+    bufferMs: 9000,
+    switchNote: KATMAI_NOTE,
+    info: `
+## River Watch — the mouth of Brooks River
+From the **east end of the lower-river platform**, looking out over the **outlet of Brooks River into Naknek Lake** — mountains behind, water to the horizon. The most scenic of the Katmai angles; bears cross the frame with a national-park postcard behind them.
+
+*(Added at Joan's request 2026-07-28 — she asked for "Kat's River View," which maps to explore.org's "River Watch" cam. If she meant a different angle, the other Brooks cams are one switch away.)*
+
+### What to watch for
+- Bears swimming or wading the river mouth, sometimes right under the floating bridge
+- Distant fishing action strung out across the shallows
+- Naknek Lake weather rolling in — this is the cam for Alaskan SKY
+- Float planes taxiing in with visitors (how everyone arrives; there are no roads)
+`.trim(),
+  },
+  {
+    id: 'brooks-underwater',
+    name: 'UNDERWATER Bear Cam — Brooks River, ALASKA 🐟🐻',
+    url: 'https://explore.org/livecams/three-bears/underwater-bear-cam-brown-bear-salmon-cams',
+    description: 'A camera IN the river at the floating bridge: the salmon run streaming past, and sometimes a swimming bear at eye level.',
+    strategy: 'youtube-embed',
+    bufferMs: 9000,
+    switchNote: KATMAI_NOTE,
+    info: `
+## The Underwater Cam
+Mounted on the **floating bridge at the mouth of Brooks River, looking downstream, underwater.** The salmon run from a fish's-eye view: silver bodies stacking against the current, waiting for their moment at the falls.
+
+And occasionally the water darkens and a **swimming brown bear** crosses the frame at eye level — paws paddling, bubbles streaming — which is worth every empty minute that came before it.
+
+### What to watch for
+- **Sockeye stacking up** — dozens holding formation against the current
+- Spawning colors as the season turns: silver → deep red with green heads
+- The sudden scatter when a bear plunges in upstream
+- A bear's face, underwater, looking around — rare, unforgettable
+`.trim(),
+  },
+  {
     id: 'octocam-north',
     name: 'OctoCam NORTH — Giant Pacific Octopus, Oregon 🐙',
     url: OCTOCAM_URL,
