@@ -130,7 +130,30 @@ export function createServer(): Server {
       }
 
       case 'make_observation': {
-        const { note, tags } = args as { note: string; tags?: string[] };
+        const { note, tags } = args as { note?: unknown; tags?: string[] };
+
+        // FAIL LOUDLY. Previously a call with no `note` was accepted and an
+        // entry was silently persisted with note===undefined, which then read
+        // back as the literal string "undefined". That happened twice on
+        // 2026-07-29 (Alexander sent `observation:` instead of `note:`) and
+        // cost hours, because a silent success is indistinguishable from a
+        // real one. An observation with no content is not an observation.
+        if (typeof note !== 'string' || note.trim() === '') {
+          const got = Object.keys(args ?? {}).join(', ') || '(none)';
+          return {
+            isError: true,
+            content: [
+              {
+                type: 'text',
+                text:
+                  `❌ NOT SAVED. make_observation requires a non-empty string in the \`note\` field.\n` +
+                  `Received fields: ${got}\n` +
+                  `⚠️ Common slip: sending \`observation:\` instead of \`note:\`.`,
+              },
+            ],
+          };
+        }
+
         const camera = findCamera(activeCameraId);
         if (!camera) throw new Error(`Camera not found: ${activeCameraId}`);
 
@@ -165,7 +188,11 @@ export function createServer(): Server {
         const lines = observations
           .map(
             (o) =>
-              `**[${o.timestamp}]** ${o.cameraName}\n${o.note}${o.tags.length ? ` _(${o.tags.join(', ')})_` : ''}`
+              `**[${o.timestamp}]** ${o.cameraName}\n${
+                typeof o.note === 'string' && o.note.trim() !== ''
+                  ? o.note
+                  : '⚠️ (no note was recorded for this entry — written before make_observation validated its input)'
+              }${o.tags.length ? ` _(${o.tags.join(', ')})_` : ''}`
           )
           .join('\n\n');
 
