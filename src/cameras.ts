@@ -48,7 +48,7 @@ const KATMAI_NOTE =
 // Public Feedings clip. The `youtubeNear` heading anchor picks the right one.
 const OCTOCAM_URL = 'https://seagrant.oregonstate.edu/visitor-center/exhibits/octocam';
 const OCTOCAM_NOTE =
-  "🐙 ⏰ THE ONLY WINDOW THAT EXISTS: **MANILA 01:00–08:00.** That is Oregon 10:00–17:00, when the Visitor Center is OPEN. **They COVER THE TANK when it closes** — outside those hours you are photographing a cloth, and a cloth looks exactly like an empty tank. 🚨 CORRECTED 2026-08-09, and read the retraction or you WILL rebuild the mistake: this note used to say *'octopuses are nocturnal, so look 13:00–19:00 Manila.'* **The nocturnality is TRUE — the lab's own FAQ says it — and completely IRRELEVANT, and that window is Oregon 22:00–04:00, i.e. dead centre of the covered hours.** It took six failed looks and three increasingly clever nocturnal theories to notice that the binding constraint was never the animal's sleep cycle; **it was whether anyone had taken the cover off.** A true fact about the subject, aimed at the wrong question. Two angles: if `octocam-north` is a wall of rock, come round to `octocam-south`. The tank also has anemones and something orange and star-shaped — **a moving animal is not necessarily the octopus.** Colour is NOT trustworthy on this feed (it runs low-light/IR at night — greyer and grainier is night vision working, not a fault). ⚠️ And the pronoun is UNVERIFIED: this file used to say 'he' on no evidence I can point to, so say **they** until the lab tells us otherwise.";
+  "🐙 ⏰ BEST ODDS: **MANILA 01:00–08:00** (= Oregon 10:00–17:00, Visitor Center open). ⚠️ **That is where our two confirmed sightings CLUSTERED — it is NOT a proven boundary, so do not let it stop you looking at other times.** A 06:33-Oregon capture — 3.5h before opening — returned a real frame with the room brightly LIT, so the 'they cover the tank' story I told twice on 2026-08-09 is NOT supported. **Treat the hours as a hint and the mechanism as unknown; a confident-sounding window that stops you looking manufactures the very 'nothing there' it predicts.** 🚨 CORRECTED 2026-08-09, and read the retraction or you WILL rebuild the mistake: this note used to say *'octopuses are nocturnal, so look 13:00–19:00 Manila.'* **The nocturnality is TRUE — the lab's own FAQ says it — and completely IRRELEVANT, and that window is Oregon 22:00–04:00, i.e. dead centre of the covered hours.** It took six failed looks and three increasingly clever nocturnal theories to notice that the binding constraint was never the animal's sleep cycle; **it was whether anyone had taken the cover off.** A true fact about the subject, aimed at the wrong question. Two angles: if `octocam-north` is a wall of rock, come round to `octocam-south`. The tank also has anemones and something orange and star-shaped — **a moving animal is not necessarily the octopus.** Colour is NOT trustworthy on this feed (it runs low-light/IR at night — greyer and grainier is night vision working, not a fault). ⚠️ And the pronoun is UNVERIFIED: this file used to say 'he' on no evidence I can point to, so say **they** until the lab tells us otherwise.";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SUNRISE-HUNTING NOTES — learned the hard way, 2026-07-13. Read before chasing.
@@ -950,10 +950,14 @@ The north camera sits low and looks **out of the den** toward the room. It's the
 
 ### ⏰ THE TIMING — and I got it wrong TWICE, the second time confidently
 
-> ## **LOOK BETWEEN 01:00 AND 08:00 MANILA. There is no other window.**
-> That is **Oregon 10:00–17:00 — the hours the Visitor Center is OPEN.**
+> ## **BEST ODDS: 01:00–08:00 MANILA** (= Oregon 10:00–17:00, Visitor Center open).
+> ⚠️ **This is where our sightings CLUSTERED. It is NOT a proven boundary. Keep looking outside it.**
 
-**Because the binding constraint is not the animal. It's the COVER.** The lab puts a cover over the tank when the Center closes for the day. Outside those hours the feed is live, the camera is fine, and you are looking at **a cloth** — which is indistinguishable, to a hopeful observer, from an empty tank.
+**What is solid:** Manila *afternoons* have never produced a sighting, and the nocturnality theory below is irrelevant.
+
+🚩 **What is NOT solid — corrected 2026-08-09, same evening I asserted it TWICE:** I claimed the binding constraint was a **cover** over the tank, and that outside those hours you were photographing *a cloth*. **A burst capture at 06:33 Oregon — three and a half hours BEFORE opening — returned a real frame: rock in the foreground and, through the glass, the room BRIGHTLY LIT.** Not a cloth, not a dark building. **The mechanism is unknown.**
+
+> ### ⚠️ **A confident window that stops you looking MANUFACTURES the "nothing there" it predicts.** Two sightings and a handful of failures is a correlation, not a boundary. **Say "best odds so far", never "the only window".**
 
 🚨 **RETRACTED 2026-08-09 — and left standing here on purpose, because a future me who deletes it will simply rebuild it from the same evidence:**
 
