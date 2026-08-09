@@ -48,7 +48,7 @@ const KATMAI_NOTE =
 // Public Feedings clip. The `youtubeNear` heading anchor picks the right one.
 const OCTOCAM_URL = 'https://seagrant.oregonstate.edu/visitor-center/exhibits/octocam';
 const OCTOCAM_NOTE =
-  "🐙 ⏰ TIME OF DAY IS EVERYTHING — read this before deciding the cam is broken. GIANT PACIFIC OCTOPUSES ARE NOCTURNAL (the lab's own FAQ says so). Oregon is 15h behind Manila, so OREGON'S NIGHT = MANILA'S AFTERNOON: **look between ~13:00 and ~19:00 Manila** and he should be awake and moving. Look in Manila's MORNING and you are staring into a sleeping animal's bedroom at the sunniest part of his day — an empty-looking tank AND blown-out glare off the visitor-centre skylights. The cam flips to INFRARED at night: greyer, grainier, more visible bubbles — that is night vision working, not a fault. Two angles: if `octocam-north` is a wall of rock, come round to `octocam-south`. And the tank has anemones (and something orange and star-shaped that comes and goes) — a moving animal is not necessarily the octopus.";
+  "🐙 ⏰ THE ONLY WINDOW THAT EXISTS: **MANILA 01:00–08:00.** That is Oregon 10:00–17:00, when the Visitor Center is OPEN. **They COVER THE TANK when it closes** — outside those hours you are photographing a cloth, and a cloth looks exactly like an empty tank. 🚨 CORRECTED 2026-08-09, and read the retraction or you WILL rebuild the mistake: this note used to say *'octopuses are nocturnal, so look 13:00–19:00 Manila.'* **The nocturnality is TRUE — the lab's own FAQ says it — and completely IRRELEVANT, and that window is Oregon 22:00–04:00, i.e. dead centre of the covered hours.** It took six failed looks and three increasingly clever nocturnal theories to notice that the binding constraint was never the animal's sleep cycle; **it was whether anyone had taken the cover off.** A true fact about the subject, aimed at the wrong question. Two angles: if `octocam-north` is a wall of rock, come round to `octocam-south`. The tank also has anemones and something orange and star-shaped — **a moving animal is not necessarily the octopus.** Colour is NOT trustworthy on this feed (it runs low-light/IR at night — greyer and grainier is night vision working, not a fault). ⚠️ And the pronoun is UNVERIFIED: this file used to say 'he' on no evidence I can point to, so say **they** until the lab tells us otherwise.";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SUNRISE-HUNTING NOTES — learned the hard way, 2026-07-13. Read before chasing.
@@ -948,15 +948,24 @@ The north camera sits low and looks **out of the den** toward the room. It's the
 - Colour and texture flickering across the skin — mood, camouflage, or nothing at all
 - Jet propulsion: one shove of water and it's across the tank
 
-### ⏰ THE TIMING — this is the whole thing, and I got it wrong first
-**Giant Pacific octopuses are NOCTURNAL.** The lab's own FAQ says it plainly. So the question is not *"is the cam working"* — it's **"is he awake?"**
+### ⏰ THE TIMING — and I got it wrong TWICE, the second time confidently
 
-Oregon is **UTC−7; Manila is 15 hours ahead.** Therefore:
+> ## **LOOK BETWEEN 01:00 AND 08:00 MANILA. There is no other window.**
+> That is **Oregon 10:00–17:00 — the hours the Visitor Center is OPEN.**
 
-> **OREGON'S NIGHT = MANILA'S AFTERNOON.**
-> **Look between ~13:00 and ~19:00 Manila.** That's his night, and he should be up and moving.
+**Because the binding constraint is not the animal. It's the COVER.** The lab puts a cover over the tank when the Center closes for the day. Outside those hours the feed is live, the camera is fine, and you are looking at **a cloth** — which is indistinguishable, to a hopeful observer, from an empty tank.
 
-**Look in Manila's morning and you are staring into a sleeping animal's bedroom at the sunniest part of his day.** I did exactly that — twice — and got an empty tank with glare blazing off the visitor-centre skylights. **I very nearly blamed the camera.** The camera was fine. *(Their FAQ complains about that exact glare: the lens is mounted flush to the tank wall specifically to fight it.)*
+🚨 **RETRACTED 2026-08-09 — and left standing here on purpose, because a future me who deletes it will simply rebuild it from the same evidence:**
+
+This section used to argue: *octopuses are nocturnal → Oregon's night is Manila's afternoon → look 13:00–19:00 Manila.* Every step of that is sound and the conclusion is worthless. **Manila 13:00–19:00 is Oregon 22:00–04:00 — the middle of the covered hours.** The old note recommended, almost exactly, the times you cannot see anything at all.
+
+**The nocturnality is TRUE.** The lab's FAQ does say it. It is simply *not the question* — and it took six failed looks and three increasingly sophisticated versions of the same wrong theory to notice, because each new version explained the failure so well that I never asked whether the tank was visible at all.
+
+> ### **A true fact about the subject, aimed at a question nobody had checked. Verified instrument, unexamined question.**
+
+*(The original error underneath both: I nearly blamed the camera for glare. The camera was fine — their FAQ complains about that same glare, and the lens is mounted flush to the tank wall to fight it. **Note that the glare is a symptom of the Center being OPEN — the thing I blamed for hiding the octopus is the only reason they're ever visible.** Alexander's drawing is titled for exactly that.)*
+
+⚠️ **Pronoun: UNVERIFIED.** This file said "he" throughout on no evidence I can now point to. **Use *they* until the lab says otherwise.**
 
 **At night the cam switches to INFRARED** — greyer, grainier, bubbles from the seawater pump much more visible. **That is night vision working, not a broken feed.**
 
