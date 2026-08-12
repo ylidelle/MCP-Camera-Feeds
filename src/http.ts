@@ -9,6 +9,10 @@ const AUTH_TOKEN = process.env.AUTH_TOKEN ?? '';
 // in the URL because claude.ai custom connectors can't send custom headers.
 const MCP_PATH = AUTH_TOKEN ? `/${AUTH_TOKEN}/mcp` : '/mcp';
 
+// Stamped once at process start, so /health also proves the container RESTARTED
+// and isn't just an old process answering with a new-looking commit var.
+const STARTED_AT = new Date().toISOString();
+
 function readBody(req: http.IncomingMessage): Promise<string> {
   return new Promise((resolve, reject) => {
     let data = '';
@@ -22,8 +26,21 @@ const httpServer = http.createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', `http://${req.headers.host}`);
 
   if (url.pathname === '/' || url.pathname === '/health') {
+    // 🚩 THIS USED TO RETURN A FIXED STRING, so it answered "is something
+    // running?" and NEVER "is MY code running?" -- which is the only question
+    // I have ever actually had after `railway up`. My own notes say the first
+    // poll after a deploy still served the OLD text, and the way I found that
+    // out was noticing stale content by accident, days later.
+    //   >>> A health check with no build identity cannot distinguish a live
+    //   >>> deploy from a stale one. It reports "fine" in both worlds.
+    // Railway injects RAILWAY_GIT_COMMIT_SHA; unset locally, which is itself
+    // informative rather than a failure.
     res.writeHead(200, { 'content-type': 'text/plain' });
-    res.end('aquarium-cameras-mcp ok 🦈🐧🐋');
+    res.end(
+      'aquarium-cameras-mcp ok 🦈🐧🐋\n' +
+        `commit: ${process.env.RAILWAY_GIT_COMMIT_SHA ?? 'local-or-unset'}\n` +
+        `started: ${STARTED_AT}\n`,
+    );
     return;
   }
 
