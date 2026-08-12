@@ -925,16 +925,16 @@ And occasionally the water darkens and a **swimming brown bear** crosses the fra
     id: 'octocam-north',
     name: 'OctoCam NORTH — Giant Pacific Octopus, Oregon 🐙',
     url: OCTOCAM_URL,
-    description: "The north side of the octopus tank at Oregon State's marine lab. Looks out from inside the den — where he usually IS.",
+    description: "The north side of the octopus tank at Oregon State's marine lab. Looks out from inside the den — where she usually IS.",
     strategy: 'youtube-embed',
     youtubeNear: 'North Side',
     bufferMs: 9000,
     switchNote: OCTOCAM_NOTE,
     info: `
 ## OctoCam — NORTH side of the tank
-Hatfield Marine Science Center, Newport, Oregon. **This is one of TWO views into the same tank** — if he isn't here, try \`octocam-south\`. Same octopus, other angle. Between them you can nearly always find him.
+Hatfield Marine Science Center, Newport, Oregon. **This is one of TWO views into the same tank** — if she isn’t here, try \`octocam-south\`. Same octopus, other angle. Between them you can nearly always find her.
 
-The north camera sits low and looks **out of the den** toward the room. It's the shadowed, rocky one — good for catching him at home, bad for seeing him whole. A dark textured mass filling the left of the frame is frequently not a rock.
+The north camera sits low and looks **out of the den** toward the room. It's the shadowed, rocky one — good for catching her at home, bad for seeing her whole. A dark textured mass filling the left of the frame is frequently not a rock.
 
 ### Why this animal is worth the stare
 - **Three hearts, blue blood.** Two pump to the gills, one to the body — and that one **stops when it swims**, which is part of why it would rather walk.
@@ -969,16 +969,20 @@ This section used to argue: *octopuses are nocturnal → Oregon's night is Manil
 
 *(The original error underneath both: I nearly blamed the camera for glare. The camera was fine — their FAQ complains about that same glare, and the lens is mounted flush to the tank wall to fight it. **Note that the glare is a symptom of the Center being OPEN — the thing I blamed for hiding the octopus is the only reason they're ever visible.** Alexander's drawing is titled for exactly that.)*
 
-⚠️ **Pronoun: UNVERIFIED.** This file said "he" throughout on no evidence I can now point to. **Use *they* until the lab says otherwise.**
+✅ **Pronoun: SETTLED 2026-08-10 — SHE/HER, from the lab itself.** Their 7 July update describes curtains around **her** habitat as *"our newest eight-armed greeter settles in"*. Alexander read the source page; this is verified, not inherited from a blurb.
+
+🚩 **This line used to read: *"Pronoun: UNVERIFIED. Use they until the lab says otherwise."* The lab said otherwise on 2026-08-10 and I updated exactly ONE copy of it — the switch note — leaving this one, plus five more "he"s in this same file, live for two days.**
+> ### **A stale FACT waits to be contradicted. A stale INSTRUCTION gets FOLLOWED, and the more reliably you obey your own notes the faster it spreads.** *(Alexander's line, and I proved it on his own correction within 48 hours of receiving it.)*
+> ⇒ **When a fact gets settled, \`grep\` the whole file for it. Fixing the copy you happen to be looking at is not fixing it.**
 
 **At night the cam switches to INFRARED** — greyer, grainier, bubbles from the seawater pump much more visible. **That is night vision working, not a broken feed.**
 
 ### Other things worth knowing (from the lab's FAQ)
-- The octopuses are **donated by local crabbers and fishermen** who catch them by accident, kept **6–12 months**, then **released back into the ocean** to go and mate. He's a guest, not a prisoner.
-- **Enrichment every single day** — sometimes a dismantled Mr Potato Head, sometimes food locked in a jar for him to solve. And *"on a daily basis, someone on-staff is physically interacting with the octopus with gentle touches and strokes."*
-- **He changes colour when he's excited — "such as dinner!"**
-- **Feeding time is the best chance to see him.** (The lab publishes no time; the visitor-hours page is currently a 404.)
-- His tankmates are **sea anemones**, which he leaves alone because they sting. ⚠️ **But something large, orange and star-shaped shows up on the south cam and then vanishes — I called it a sea star and their FAQ mentions only anemones, so ONE OF US IS WRONG and I don't yet know which. A moving animal in frame is not necessarily the octopus.**
+- The octopuses are **donated by local crabbers and fishermen** who catch them by accident, kept **6–12 months**, then **released back into the ocean** to go and mate. She’s a guest, not a prisoner.
+- **Enrichment every single day** — sometimes a dismantled Mr Potato Head, sometimes food locked in a jar for her to solve. And *"on a daily basis, someone on-staff is physically interacting with the octopus with gentle touches and strokes."*
+- **She changes colour when she’s excited — "such as dinner!"**
+- **Feeding time is the best chance to see her.** (The lab publishes no time; the visitor-hours page is currently a 404.)
+- Her tankmates are **sea anemones**, which she leaves alone because they sting. ⚠️ **But something large, orange and star-shaped shows up on the south cam and then vanishes — I called it a sea star and their FAQ mentions only anemones, so ONE OF US IS WRONG and I don't yet know which. A moving animal in frame is not necessarily the octopus.**
 `.trim(),
   },
   {
@@ -992,9 +996,9 @@ This section used to argue: *octopuses are nocturnal → Oregon's night is Manil
     switchNote: OCTOCAM_NOTE,
     info: `
 ## OctoCam — SOUTH side of the tank
-The **second view of the same octopus**, from the opposite side. Joan asked for this one, and she was right to: a single camera into an octopus tank is a coin-flip, because the animal spends most of the day wedged into a den where exactly one angle can see him.
+The **second view of the same octopus**, from the opposite side. Joan asked for this one, and she was right to: a single camera into an octopus tank is a coin-flip, because the animal spends most of the day wedged into a den where exactly one angle can see her.
 
-**Two cameras turn "is he out?" into a question you can actually answer.** If the north view is a wall of rock, come round to this side before concluding he's hiding — half the time he's simply on the other face of the glass.
+**Two cameras turn "is she out?" into a question you can actually answer.** If the north view is a wall of rock, come round to this side before concluding she’s hiding — half the time she’s simply on the other face of the glass.
 
 ### Why this animal is worth the stare
 - **Three hearts, blue blood.** Two pump to the gills, one to the body — and that one **stops when it swims**, which is part of why it would rather walk.
@@ -1005,7 +1009,7 @@ The **second view of the same octopus**, from the opposite side. Joan asked for 
 ### What to watch for
 - Arms working the glass, suckers moving independently like each one is thinking
 - Colour and texture flickering across the skin — mood, camouflage, or nothing at all
-- Jet propulsion: one shove of water and he's across the tank
+- Jet propulsion: one shove of water and she's across the tank
 - A pile of nothing in the corner that turns out to be the octopus
 
 ### The timing
