@@ -171,6 +171,32 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
   });
   const page = await context.newPage();
 
+  // 🚩 NETWORK SNIFF — added 2026-08-13, and it is the fallback that actually
+  // fixes the explore.org bear cams.
+  //
+  // DIAGNOSED, not guessed. Probing the page directly:
+  //   iframes: ONLY a Google Maps embed · [data-video-id]: none · <video>: 0
+  //   youtube ids anywhere in 2,042,897 chars of HTML: ZERO
+  // ...yet the network showed `youtube.com/iframe_api` followed by
+  // `youtube.com/embed/J7ZrIDvqlic?autoplay=1...` and a real googlevideo
+  // playback stream. The player IS YouTube; explore.org just builds it with the
+  // IFrame API, so the <iframe> is injected by JS and never exists in the
+  // document we were searching.
+  //
+  //   >>> The DOM says what the page IS. The network says what the page DOES.
+  //   >>> Scraping markup for a thing the markup never contained is the same
+  //   >>> mistake as reading a printout instead of counting from the source.
+  //
+  // Kept as a FALLBACK, not a replacement: the aquarium cams' [data-video-id]
+  // path is faster and still correct, and a change that breaks working cameras
+  // to fix broken ones is not a fix.
+  let sniffedId: string | null = null;
+  page.on('request', (req) => {
+    if (sniffedId) return;
+    const m = req.url().match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/);
+    if (m) sniffedId = m[1];
+  });
+
   await page.goto(camera.url, { waitUntil: 'domcontentloaded', timeout: 40000 });
   await page.waitForTimeout(camera.bufferMs ?? 5000); // SPA players mount late
 
@@ -200,16 +226,21 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
     return frames.length ? idOf(frames[0]) : null;
   }, camera.youtubeNear);
 
-  if (!videoId) {
+  // ⚠️ The sniff is deliberately NOT used when `youtubeNear` is set: that option
+  // exists to pick ONE stream from a page with several, and a network sniff
+  // cannot tell which caption owns which request. Falling back there would
+  // silently return the wrong animal — a confident frame of somewhere else.
+  const resolvedId = videoId ?? (camera.youtubeNear ? null : sniffedId);
+
+  if (!resolvedId) {
     throw new Error(
       camera.youtubeNear
         ? `No YouTube player found under a heading matching "${camera.youtubeNear}" on ${camera.url} — the cam page layout may have changed.`
-        : `No YouTube video id found on ${camera.url} — the cam page layout may have changed.`
+        : `No YouTube video id found on ${camera.url} (DOM or network) — the cam page layout may have changed.`
     );
   }
-
   await page.goto(
-    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`,
+    `https://www.youtube.com/embed/${resolvedId}?autoplay=1&mute=1&playsinline=1`,
     { waitUntil: 'domcontentloaded', timeout: 30000 }
   );
 
