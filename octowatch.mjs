@@ -93,6 +93,7 @@ function inZone(d, timeZone) {
 const now = new Date();
 const ore = inZone(now, 'America/Los_Angeles');
 const mnl = inZone(now, 'Asia/Manila');
+const utc = inZone(now, 'UTC');   // run key for cameras that are not in Oregon
 
 // 🚩 THE WINDOW IS A FACT ABOUT THE OCTOPUS TANK, NOT ABOUT CAMERAS.
 // It exists because Hatfield covers the tank outside visitor hours. Applying it
@@ -134,7 +135,14 @@ for (const id of CAMS) {
     // is the single thing I get wrong most often about this cam.
     const now2 = inZone(new Date(), 'Asia/Manila');
     const out = path.join(OUT_DIR,
-      `${now2.stamp}MNL_${id}_OREGON-${ore.hhmm}_s${shot}${tag}.jpg`);
+      // 🚩 THE RUN KEY IS STAMPED IN THE ZONE THE CAMERA IS ACTUALLY IN.
+      // It groups a burst, so any consistent clock works as an identifier --
+      // but `OREGON-1825` on a frame from KATMAI, ALASKA is a filename asserting
+      // something false about itself, and filenames outlive the run that made
+      // them. Same fault as `_FORCED-OUTSIDE-WINDOW` on a bear, one field over.
+      //   >>> Octocam keeps OREGON- so its 190+ existing frames stay groupable;
+      //   >>> everything else gets UTC-, which is true of any camera anywhere.
+      `${now2.stamp}MNL_${id}_${id.startsWith('octocam') ? `OREGON-${ore.hhmm}` : `UTC-${utc.hhmm}`}_s${shot}${tag}.jpg`);
     try {
       const buf = Buffer.from(await takeSnapshot(cam), 'base64');
       writeFileSync(out, buf);
