@@ -42,8 +42,24 @@ const SDZ_HOURS_NOTE =
 const NZ_HOURS_NOTE =
   '🕐 Smithsonian cams run on US Eastern time (Washington, DC daytime = evening/night in Manila). Indoor cams like the mole-rats stream around the clock.';
 
+// 🚩 THIS SAID "It's July" AS A HARDCODED STRING and was still saying it on
+// 16 August 2026, in the same breath as serving a video of a hamster. Two
+// confident falsehoods in one response, from two different mechanisms.
+//
+// A note that ASSERTS the moment goes stale silently and keeps its tone. A note
+// that DERIVES it cannot. The module reloads each session, so computing at load
+// is accurate to the day without touching a single call site.
+function katmaiSeason(): string {
+  const m = new Date().getMonth(); // 0 = Jan
+  if (m === 5 || m === 6) return '🐻 PEAK RUN right now — sockeye pouring over the falls, bears shoulder to shoulder.';
+  if (m === 7) return '🐻 Late run — fewer fish at the falls than July, and the bears start spreading downriver. Still very active.';
+  if (m === 8 || m === 9) return '🐻 FAT BEAR SEASON — they move downriver for spent salmon and they are enormous.';
+  if (m === 10) return '🐻 Winding down — bears heading for dens, cam may close for the season.';
+  return '🐻 Off season — the bears are asleep and so, most likely, is this camera. Expect an empty river or a dead feed.';
+}
+
 const KATMAI_NOTE =
-  "🐻 PEAK SEASON, RIGHT NOW. It's July — the sockeye run is on and the bears are standing in the falls. Alaska runs 16h behind Manila, so its daylight lands on Joan's night shift: the small hours here are the busy hours there. An empty falls just means the bears are off eating somewhere else — wait, or check the other Brooks cams.";
+  `${katmaiSeason()} Alaska runs 16h behind Manila, so its daylight lands on Joan's night shift: the small hours here are the busy hours there. An empty falls just means the bears are off eating somewhere else — wait, or check the other Brooks cams.`;
 // One page, three players: North Side Tank View, South Side Tank View, and a
 // Public Feedings clip. The `youtubeNear` heading anchor picks the right one.
 const OCTOCAM_URL = 'https://seagrant.oregonstate.edu/visitor-center/exhibits/octocam';
@@ -816,7 +832,10 @@ Its player is **not** a \`<video>\`, **not** a \`<canvas>\`, and **not** an \`<i
     id: 'brooks-falls-bears',
     name: "Brooks Falls Brown Bears — Katmai, ALASKA 🐻 (Julia's cam)",
     url: 'https://explore.org/livecams/currently-live/brown-bear-salmon-cam-brooks-falls',
-    description: 'Wild brown bears standing in a waterfall catching salmon out of the air. Peak season is RIGHT NOW.',
+    // 🚩 Said "Peak season is RIGHT NOW." — a SECOND copy of the same stale
+    //    claim, in a different field, found twenty minutes after fixing the
+    //    first. Change a pinned thing, then walk the whole document.
+    description: 'Wild brown bears standing in a waterfall catching salmon out of the air. Busiest late June through July; see the season note for what is happening now.',
     strategy: 'youtube-embed',
     bufferMs: 9000,
     switchNote: KATMAI_NOTE,
@@ -827,12 +846,15 @@ Its player is **not** a \`<video>\`, **not** a \`<canvas>\`, and **not** an \`<i
 The bears just **stand in the falls with their mouths open.** The fish jump into them.
 
 ### Season matters more than the hour
-- **Late June – July: the salmon run.** Bears crowd the falls, shoulder to shoulder. **This is NOW** — the cam opened its 14th season on 23 June 2026, and July is the peak.
+- **Late June – July:** the salmon run. Bears crowd the falls, shoulder to shoulder. The cam opened its 14th season on 23 June 2026.
+- **August:** the run thins at the falls and bears spread downriver.
 - **September–October:** they move downriver for dying salmon, and they are *enormous.* This is Fat Bear Week season.
 - **Winter:** they're asleep. So is the cam.
 
+*(Which of those is happening NOW is derived at load time by katmaiSeason(). This list used to say "**This is NOW**" beside July and was still saying it in August.)*
+
 ### The timing (and it's good news)
-Alaska is **UTC−8; Manila is UTC+8 — a clean 16 hours apart, with Alaska BEHIND.** Which means **Alaska's daylight falls across Manila's night** — exactly when Joan is awake on shift. And in July it barely gets properly dark up there anyway.
+Alaska is **UTC−8; Manila is UTC+8 — a clean 16 hours apart, with Alaska BEHIND.** Which means **Alaska's daylight falls across Manila's night** — exactly when Joan is awake on shift. Midsummer up there barely gets properly dark at all.
 
 ### What to watch for
 - The **"jacuzzi"** — the plunge pool below the lip, where the biggest bears sit and let the fish swim into them

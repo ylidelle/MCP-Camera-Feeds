@@ -190,11 +190,14 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
   // Kept as a FALLBACK, not a replacement: the aquarium cams' [data-video-id]
   // path is faster and still correct, and a change that breaks working cameras
   // to fix broken ones is not a fix.
-  let sniffedId: string | null = null;
+  // 🚩 COLLECT ALL OF THEM, IN ORDER — was `if (sniffedId) return`, first-wins.
+  // First-wins is a race, and on 2026-08-16 the Brooks Falls cams returned a
+  // BIRTHDAY HAMSTER because the page now serves two embeds and the wrong one
+  // was chosen. Keeping every candidate is what makes choosing possible.
+  const sniffedIds: string[] = [];
   page.on('request', (req) => {
-    if (sniffedId) return;
     const m = req.url().match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/);
-    if (m) sniffedId = m[1];
+    if (m && !sniffedIds.includes(m[1])) sniffedIds.push(m[1]);
   });
 
   await page.goto(camera.url, { waitUntil: 'domcontentloaded', timeout: 40000 });
@@ -230,14 +233,82 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
   // exists to pick ONE stream from a page with several, and a network sniff
   // cannot tell which caption owns which request. Falling back there would
   // silently return the wrong animal — a confident frame of somewhere else.
-  const resolvedId = videoId ?? (camera.youtubeNear ? null : sniffedId);
+  //
+  // 🐹 AND ON 2026-08-16 IT RETURNED THE WRONG ANIMAL ANYWAY, by the opposite
+  // route. `brooks-falls-low` and `brooks-falls-bears` both served a stock video
+  // of a hamster on a rope with "Happy birthday to you" captions, while the tool
+  // printed a confident paragraph about plunge pools and dominant bears.
+  //
+  //   DOM iframe   pAFcMq54K2k  (+5.1s)  <- what we picked. The hamster.
+  //   network      J7ZrIDvqlic  (+2.0s)  <- Brooks Falls, NPS watermark and all.
+  //
+  // The comment above this block used to say the DOM path was "faster and still
+  // correct". It is faster. It stopped being correct, and nothing noticed,
+  // because the description is built from hardcoded metadata and CANNOT
+  // disagree with the pixels. A fluent report with no causal link to the state
+  // it reports on is exactly the failure this house studies for a living.
+  //
+  // ⭐ THE FIX USES NO THRESHOLD AND NO GUESS ABOUT PAGE STRUCTURE. Two
+  // discriminators were predicted and both measured NULL: the `.ytp-live` badge
+  // is absent from embeds, and `duration === Infinity` is false for live DVR
+  // streams. What the measurement actually showed is a 1,900x gap:
+  //     Brooks Falls  duration 50,390s   (~14h of DVR behind live)
+  //     hamster       duration     26.5s
+  // So: probe every candidate and take the LONGEST. A live cam has hours behind
+  // it; a promo clip has seconds. argmax needs no cutoff to defend.
+  const candidates: string[] = [];
+  for (const c of [videoId, ...(camera.youtubeNear ? [] : sniffedIds)]) {
+    if (c && !candidates.includes(c)) candidates.push(c);
+  }
 
-  if (!resolvedId) {
+  if (!candidates.length) {
     throw new Error(
       camera.youtubeNear
         ? `No YouTube player found under a heading matching "${camera.youtubeNear}" on ${camera.url} — the cam page layout may have changed.`
         : `No YouTube video id found on ${camera.url} (DOM or network) — the cam page layout may have changed.`
     );
+  }
+
+  let resolvedId = candidates[0];
+  if (candidates.length > 1) {
+    // Only pays when the page is ambiguous. Single-candidate pages — which is
+    // most of the aquarium cams — are untouched, because a change that breaks
+    // working cameras to fix broken ones is not a fix.
+    const measured: { id: string; duration: number }[] = [];
+    for (const id of candidates) {
+      const probe = await context.newPage();
+      try {
+        await probe.goto(`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1`,
+                         { waitUntil: 'domcontentloaded', timeout: 25000 });
+        await probe.waitForFunction(() => {
+          const v = document.querySelector('video');
+          return !!v && v.readyState >= 3 && v.currentTime > 0.2;
+        }, { timeout: 20000 }).catch(() => {});
+        const d = await probe.evaluate(() => {
+          const v = document.querySelector('video');
+          const n = v ? v.duration : 0;
+          return Number.isFinite(n) ? n : 1e9;   // a true Infinity is maximally live
+        });
+        measured.push({ id, duration: d ?? 0 });
+      } catch {
+        measured.push({ id, duration: 0 });
+      }
+      await probe.close();
+    }
+    measured.sort((a, b) => b.duration - a.duration);
+    resolvedId = measured[0].id;
+
+    // A refusal guard, not a selection rule: selection above is threshold-free.
+    // If even the best candidate is a few seconds long, this page is no longer
+    // serving a live cam and a "best-effort frame" would be a confident lie.
+    if (measured[0].duration < 120) {
+      throw new Error(
+        `No live stream found on ${camera.url}. Candidates and their stream ` +
+        `lengths: ${measured.map(m => `${m.id}=${Math.round(m.duration)}s`).join(', ')}. ` +
+        `The longest is under 2 minutes, which is a clip, not a camera. ` +
+        `Refusing to return a frame that would be described as this cam.`
+      );
+    }
   }
   await page.goto(
     `https://www.youtube.com/embed/${resolvedId}?autoplay=1&mute=1&playsinline=1`,
