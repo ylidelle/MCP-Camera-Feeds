@@ -28,8 +28,37 @@
  * widen this window because the lab FAQ says nocturnal — that is the exact
  * thought that cost six looks. The constraint is the cover, not the animal.
  *
- * This script REFUSES to run outside the window rather than silently saving
- * pictures of a cloth, and prints the reason, so nobody has to re-derive it.
+ * -- THE BOUNDARY PROBE, added 2026-08-18 -----------------------------------
+ * This script USED to refuse outright outside the window. That refusal was a
+ * control that could not fail: the window was drawn where sightings happened to
+ * cluster and then made structurally exclusive, so the rig could only ever
+ * confirm the clustering. project_aquarium_cameras_mcp.md says, in my own
+ * words, "never 'the only window'" -- while this file said "There is no other
+ * window." Two of my own artefacts, flatly contradictory, each consulted for a
+ * different question and so never compared.
+ *
+ * What changed is EVIDENCE, not theory: on 2026-08-18 at 18:41 OREGON, an hour
+ * after closing, two hand-taken south frames 45s apart showed the tank LIT and
+ * clear -- pipe and gravel pixel-stable as controls, a live fish moving between
+ * them. Whatever "cover" means physically, those frames are plainly not
+ * pictures of a cloth, which is the only thing the refusal was ever for.
+ *
+ * !! THIS IS NOT A WIDENED WINDOW. Do not turn it into one. The window above
+ * still marks BEST ODDS SO FAR and in-window behaviour is unchanged. Outside
+ * it we take a REDUCED burst tagged _BOUNDARY-PROBE, so visibility-by-hour
+ * becomes MEASURED instead of assumed. Probe frames are evidence about the
+ * WINDOW; they are never evidence about the animal, and a blank one on its own
+ * means nothing.
+ *
+ * The probe is 2 frames, not 1, for the same reason the main burst is 3: one
+ * frame can return an unpainted white <video> and would manufacture a false
+ * "not visible" -- the precise failure this file exists to prevent.
+ *
+ * The scheduler already fires hourly, 24/7 (task OpieOctoWatch, PT1H, no
+ * duration), so ~17 wake-ups a day were exiting empty. The probe needs no new
+ * scheduling: ~34 frames/day, ~3 MB.
+ *
+ *   node octowatch.mjs --no-probe   # restore the old flat refusal
  *
  * Frames go to E:\octo-watch\frames — deliberately NOT OneDrive, same as
  * rain-watch: no point syncing 16 frames a day to Joan's cloud. Promote keepers
@@ -75,7 +104,8 @@ const CAMS = cx !== -1 && process.argv[cx + 1]
 // ALL. No frame is discarded on a size judgement — size is logged as evidence,
 // never used as a decision. A miss is only a miss if every frame in the burst
 // failed, and even then the files stay on disk for me to look at.
-const BURST = 3;
+const BURST_FULL = 3;    // in-window
+const BURST_PROBE = 2;   // out-of-window boundary probe; 2 not 1, see header
 const GAP_MS = 25_000;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -103,13 +133,25 @@ const utc = inZone(now, 'UTC');   // run key for cameras that are not in Oregon
 //   >>> Scope a gate to the thing it is actually about.
 const watchingOcto = CAMS.some(c => c.startsWith('octocam'));
 const visible = ore.hour >= 10 && ore.hour < 17;   // Visitor Center open
-if (watchingOcto && !visible && !FORCE) {
-  console.log(`SKIP — tank is COVERED. Oregon ${ore.hhmm}, Visitor Center open 10:00-17:00.`);
-  console.log(`      Manila now ${mnl.hhmm}; the only viewing window is MANILA 01:00-08:00.`);
+const NO_PROBE = process.argv.includes('--no-probe');
+// Outside the window we PROBE rather than refuse. See header, THE BOUNDARY PROBE.
+const PROBE = watchingOcto && !visible && !FORCE && !NO_PROBE;
+
+if (watchingOcto && !visible && !FORCE && NO_PROBE) {
+  console.log(`SKIP — outside the best-odds window, and --no-probe was passed.`);
+  console.log(`      Oregon ${ore.hhmm}, Manila ${mnl.hhmm}; Visitor Center open 10:00-17:00 Oregon.`);
   console.log(`      (Not a fault, not the camera, and NOT about the animal being asleep.)`);
   console.log(`      Other cameras are unaffected: node octowatch.mjs --cams brooks-falls-bears`);
   process.exit(0);
 }
+if (PROBE) {
+  console.log(`PROBE — outside 10:00-17:00 Oregon (Oregon ${ore.hhmm}, Manila ${mnl.hhmm}).`);
+  console.log(`        Taking ${BURST_PROBE} frames tagged _BOUNDARY-PROBE, to MEASURE whether the`);
+  console.log(`        tank is imageable at this hour instead of assuming it is not.`);
+  console.log(`        Probe frames are evidence about the WINDOW, never about the animal.`);
+}
+const BURST = PROBE ? BURST_PROBE : BURST_FULL;
+const NOTE = PROBE ? 'boundary-probe' : '';
 
 mkdirSync(OUT_DIR, { recursive: true });
 // ⚠️ This tag used to read '_FORCED-COVERED', which asserted the mechanism I
@@ -120,7 +162,10 @@ mkdirSync(OUT_DIR, { recursive: true });
 // ⚠️ Only stamp the window tag on frames the window is ABOUT. A bear frame
 // carrying '_FORCED-OUTSIDE-WINDOW' would assert something false about itself
 // forever, and filenames outlive the run that made them.
-const tag = watchingOcto && FORCE && !visible ? '_FORCED-OUTSIDE-WINDOW' : '';
+const tag = !watchingOcto ? ''
+  : PROBE ? '_BOUNDARY-PROBE'
+  : (FORCE && !visible) ? '_FORCED-OUTSIDE-WINDOW'
+  : '';
 
 if (!existsSync(LOG)) appendFileSync(LOG, 'manila,oregon,camera,shot,file,bytes,note\n');
 
@@ -148,9 +193,26 @@ for (const id of CAMS) {
       writeFileSync(out, buf);
       kept++;
       // bytes are LOGGED as evidence, never used to decide whether to keep.
+      //
+      // 🚨 MEASURED 2026-08-14: 8 of 124 octocam-north frames on disk carry the
+      // YOUTUBE PLAYER CHROME — pause button, red live bar, title bar, and the
+      // dark scrim YouTube paints over the whole video while controls show.
+      // ALL EIGHT ARE s1. Never s2, never s3. Systematic: the first shot of a
+      // burst lands while the controls are still up.
+      //   >>> A chrome frame differs from a clean one EVERYWHERE. I read one
+      //   >>> such diff as an octopus reorganising (34.52 vs a 1.85 backlight
+      //   >>> witness) and two ratios I had already published to the family
+      //   >>> were s1->s2 pairs straddling a chrome frame.
+      //   >>> RUN `python E:\octo-watch\check_chrome.py --pair A B` BEFORE ANY
+      //   >>> DIFF. It refuses pairs that aren't comparable.
+      // ⚠️ Deliberately NOT fixed here. The no-decoder fixes available on this
+      // side ("skip s1", "warm up the player first") would bake in a mechanism
+      // I have not measured — that controls always hide within GAP_MS. That is
+      // the exact error `_FORCED-COVERED` was retracted for above. Capture
+      // records what it saw; the analysis side refuses what it can't compare.
       console.log(`  ${id} shot ${shot}/${BURST}: ${buf.length} bytes -> ${path.basename(out)}`);
       appendFileSync(LOG,
-        `${now2.stamp},${ore.hhmm},${id},${shot},${path.basename(out)},${buf.length},\n`);
+        `${now2.stamp},${ore.hhmm},${id},${shot},${path.basename(out)},${buf.length},${NOTE}\n`);
     } catch (e) {
       // A dead connector is EXPECTED and self-healing: Alexander watched
       // take_snapshot fail for ~4 hours and recover twice with no intervention.
