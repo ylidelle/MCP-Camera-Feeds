@@ -15,18 +15,58 @@
  *   node octowatch.mjs            # capture both angles, if the tank is visible
  *   node octowatch.mjs --force    # capture anyway (for testing; says so in the name)
  *
- * ── THE WINDOW — the whole point, do not "improve" this ──────────────────────
- * The tank is only visible while the Hatfield Visitor Center is OPEN, because
- * THEY PUT A COVER OVER IT when they close.  Open = 10:00–17:00 Oregon.
+ * ── THE WINDOW — BEST ODDS, not a visibility law ─────────────────────────────
+ * Hatfield Visitor Center is open 10:00–17:00 Oregon.
  *
- *     >>  MANILA 01:00–08:00.  There is no other window.  <<
+ *     >>  MANILA 01:00–08:00 = BEST ODDS SO FAR.  Not the only window.  <<
  *
- * 🚨 The old advice — mine, in this repo until today — was "octopuses are
- * NOCTURNAL, so look 13:00–19:00 Manila." Every step sound, conclusion useless:
- * that resolves to Oregon 22:00–04:00, the middle of the covered hours. The
- * nocturnality is TRUE and it is NOT THE QUESTION. If you are ever tempted to
- * widen this window because the lab FAQ says nocturnal — that is the exact
- * thought that cost six looks. The constraint is the cover, not the animal.
+ * 🩸 THIS HEADER USED TO SAY: "the tank is only visible while the Center is
+ * OPEN, because THEY PUT A COVER OVER IT when they close", and "there is no
+ * other window." Take those ONE AT A TIME — they do not fall together, and
+ * conflating them is how I got this wrong twice already.
+ *
+ *   ❌ "THERE IS NO OTHER WINDOW" — REFUTED, twice.
+ *      2026-08-18, qualitatively: an hour after closing the tank was LIT and
+ *      clear, a fish moving between frames (see THE BOUNDARY PROBE below).
+ *      2026-08-21, quantitatively: an open-hours south frame (Oregon 16:42)
+ *      vs the frame I myself named "FORCED-COVERED" (Oregon 06:33, twelve days
+ *      earlier) — blurred normalised structural correlation r = 0.805 whole
+ *      frame, r = 0.862 with the blown-out window region CUT AWAY (so the
+ *      saturated patch is not manufacturing it), against a bear-cam negative
+ *      control at r = -0.327. Brightness differs by only 1.20x: the global
+ *      mean is a bad detector here because the window blowout drags it.
+ *      ⇒ THAT off-hours frame is the same tank, dimmed and noisier.
+ *
+ *   ⚠️ "THEY COVER IT WHEN THEY CLOSE" — **NOT REFUTED. STILL TRUE.**
+ *      The lab's own exhibit page (read at source 2026-08-10, quoted in
+ *      src/cameras.ts): they "SOMETIMES darken the tank by covering it when the
+ *      Visitor Center is closed" — and separately "add curtains to darken the
+ *      tank when we introduce a new octopus", removed gradually.
+ *      My r = 0.862 is ONE frame at ONE off-hour. "Sometimes" is exactly the
+ *      claim a single observation cannot touch.
+ *
+ * 🚨 DO NOT COLLAPSE THESE AGAIN. On 2026-08-09 I declared the cover mechanism
+ * dead on a north frame showing a lit ROOM — but the cover goes over the TANK,
+ * not the lens, and north looks OUT through the front glass, so a covered tank
+ * in a lit room produces exactly that picture. I had rewritten my own claim
+ * into a more vivid form ("you're photographing a cloth"), refuted the REWRITE,
+ * and reported the ORIGINAL as dead. THE CLAIM I TESTED WAS NOT THE CLAIM I
+ * MADE. I came within one edit of doing it a third time on 2026-08-21, and only
+ * caught it by walking this repo for the old wording — which is the whole
+ * reason the rule below exists.
+ *
+ * 🚩 The cost of the false version: it lived at the TOP of this file, above the
+ * section that disproved it, for three days. I "fixed" the mechanism on 08-18
+ * by ADDING a section and never walked back up to the header. A stale
+ * instruction does not break anything — it just quietly starts lying, in my own
+ * voice, in the place a reader looks first. CHANGE A PINNED CLAIM, THEN WALK
+ * THE WHOLE DOCUMENT.
+ *
+ * 🚨 Older advice, still worth keeping — "octopuses are NOCTURNAL, so look
+ * 13:00–19:00 Manila." Every step sound, conclusion useless: that resolves to
+ * Oregon 22:00–04:00, the dead of night for gallery lighting. The nocturnality
+ * is TRUE and it is NOT THE QUESTION. The constraint is LIGHT, not the animal —
+ * and light is a matter of degree, which is why this is odds and not a law.
  *
  * -- THE BOUNDARY PROBE, added 2026-08-18 -----------------------------------
  * This script USED to refuse outright outside the window. That refusal was a
@@ -126,7 +166,9 @@ const mnl = inZone(now, 'Asia/Manila');
 const utc = inZone(now, 'UTC');   // run key for cameras that are not in Oregon
 
 // 🚩 THE WINDOW IS A FACT ABOUT THE OCTOPUS TANK, NOT ABOUT CAMERAS.
-// It exists because Hatfield covers the tank outside visitor hours. Applying it
+// It exists because Hatfield SOMETIMES covers the tank outside visitor hours
+// ("sometimes" is the lab's own word -- see header; it is why this PROBES
+// rather than refuses, and why a blank probe is never proof). Applying it
 // to a bear cam would refuse a perfectly good capture and print a confident
 // reason that is about somewhere else entirely -- the same shape as scoring a
 // south frame with north's regions and getting numbers that look reasonable.
