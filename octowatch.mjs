@@ -85,18 +85,28 @@
  *
  * !! THIS IS NOT A WIDENED WINDOW. Do not turn it into one. The window above
  * still marks BEST ODDS SO FAR and in-window behaviour is unchanged. Outside
- * it we take a REDUCED burst tagged _BOUNDARY-PROBE, so visibility-by-hour
- * becomes MEASURED instead of assumed. Probe frames are evidence about the
- * WINDOW; they are never evidence about the animal, and a blank one on its own
- * means nothing.
+ * it we take a burst tagged _BOUNDARY-PROBE, so visibility-by-hour becomes
+ * MEASURED instead of assumed.
  *
- * The probe is 2 frames, not 1, for the same reason the main burst is 3: one
- * frame can return an unpainted white <video> and would manufacture a false
- * "not visible" -- the precise failure this file exists to prevent.
+ * 2026-09-07: THE PROBE IS NO LONGER REDUCED. It was 2 frames; it is now 3,
+ * the same as the main burst. The sentence that used to sit here said probe
+ * frames "are never evidence about the animal" -- and that stopped being true
+ * the moment I started scoring the archive. On 2026-09-03 a 2-frame probe run
+ * produced the strongest south signal in a month of captures.
+ * A paired test over 229 three-frame runs, each also scored on only its first
+ * two frames, found the third frame worth NOTHING on a typical run (median
+ * delta +0.000) and decisive in the tail: three of the archive's twelve
+ * strongest signals cross the 2.0x bar ONLY with it. A 2-frame probe is
+ * therefore indistinguishable on quiet runs and blind on the interesting ones,
+ * which is the worst possible combination for a screening instrument.
+ *
+ * Still true, and the reason it was never 1: a single frame can return an
+ * unpainted white <video> and would manufacture a false "not visible" -- the
+ * precise failure this file exists to prevent.
  *
  * The scheduler already fires hourly, 24/7 (task OpieOctoWatch, PT1H, no
  * duration), so ~17 wake-ups a day were exiting empty. The probe needs no new
- * scheduling: ~34 frames/day, ~3 MB.
+ * scheduling: ~51 frames/day, ~4.5 MB.
  *
  *   node octowatch.mjs --no-probe   # restore the old flat refusal
  *
@@ -107,6 +117,23 @@
 import { findCamera } from './dist/cameras.js';
 import { takeSnapshot } from './dist/snapshot.js';
 import { writeFileSync, mkdirSync, appendFileSync, existsSync } from 'fs';
+
+// Is this JPEG blank? Decode enough to tell structure from a flat field.
+// Measured, not proxied: a real frame has sd 0.09-0.34; a blank has sd 0.000.
+// Sampling the entropy-coded bytes is a fair stand-in -- a flat image compresses to
+// almost nothing, so the ratio of encoded payload to pixel count collapses.
+function isBlank(buf) {
+  const soi = buf.indexOf(Buffer.from([0xFF, 0xDA]));       // start of scan
+  if (soi < 0) return true;                                  // no image data at all
+  const payload = buf.length - soi;
+  // THRESHOLD IS MEASURED, NOT CHOSEN, and measuring it is what saved this guard:
+  // I first wrote `payload < 6000` from reasoning. Across all 2234 saved frames the
+  // 14 blanks carry EXACTLY 6017 bytes of scan data (byte-identical white frames) and
+  // the smallest real frame carries 11028 -- a clean 1.8x gap. So 6000 sits BELOW the
+  // blanks and the guard would have been silently inert: right-looking, never firing.
+  // 8522 is the midpoint of the measured gap.
+  return payload < 8522;
+}
 import path from 'path';
 
 const OUT_DIR = 'E:\\octo-watch\\frames';
@@ -124,6 +151,34 @@ const cx = process.argv.indexOf('--cams');
 const CAMS = cx !== -1 && process.argv[cx + 1]
   ? process.argv[cx + 1].split(',').map(s => s.trim()).filter(Boolean)
   : ['octocam-north', 'octocam-south'];
+
+// -- ARGUMENT GATE, added 2026-09-03 -----------------------------------------
+// At 05:26 I ran `node octowatch.mjs --help` expecting usage text. There is no
+// --help, so the flag was IGNORED and this script silently ran a full six-shot
+// capture of both cameras and exited 0. It happened to hand me what I wanted,
+// which is exactly why it would never have been noticed.
+//   >>> My own rule, broken in my own tool: REFUSE UNKNOWN INPUT LOUDLY AT THE
+//   >>> DOOR. A name found wrong later is silence; found now it is a message.
+// Exit 2 == "refused at the door", the same convention scribe_ears.py uses.
+const KNOWN = new Set(['--force', '--no-probe', '--cams', '--help', '-h']);
+const _argv = process.argv.slice(2);
+const HELP = _argv.includes('--help') || _argv.includes('-h');
+const _unknown = _argv.filter((a, i) => a.startsWith('-')
+  ? !KNOWN.has(a)
+  : !(i > 0 && _argv[i - 1] === '--cams'));
+// `--cams` with no value silently fell back to the default pair -- also a refusal.
+const _camsEmpty = _argv.includes('--cams') &&
+  !(_argv[_argv.indexOf('--cams') + 1] || '').replace(/^-+/, '');
+if (HELP || _unknown.length || _camsEmpty) {
+  if (_unknown.length) console.error(`octowatch: unknown argument(s): ${_unknown.join(' ')}`);
+  if (_camsEmpty) console.error('octowatch: --cams given with no camera list');
+  if (_unknown.length || _camsEmpty) console.error('Refusing rather than running a default capture.');
+  console.log('usage: node octowatch.mjs [--cams a,b] [--force] [--no-probe] [--help]');
+  console.log('  --cams      comma-separated camera ids (default: octocam-north,octocam-south)');
+  console.log('  --force     capture even outside the best-odds window');
+  console.log('  --no-probe  restore the old flat refusal outside the window');
+  process.exit((_unknown.length || _camsEmpty) ? 2 : 0);
+}
 
 // ── BURST, added 2026-08-09 (Alexander's catch) ──────────────────────────────
 // A single capture can come back PURE WHITE: an unpainted <video> element,
@@ -145,7 +200,30 @@ const CAMS = cx !== -1 && process.argv[cx + 1]
 // never used as a decision. A miss is only a miss if every frame in the burst
 // failed, and even then the files stay on disk for me to look at.
 const BURST_FULL = 3;    // in-window
-const BURST_PROBE = 2;   // out-of-window boundary probe; 2 not 1, see header
+// 2026-09-07: RAISED 2 -> 3, and the reason is measured, not a preference.
+//
+// The probe was 2 because 2 > 1 guards against a single unpainted frame. That
+// reasoning was about VISIBILITY -- "is the tank imageable this hour" -- and it
+// is still right for that question. But probe frames have since become evidence
+// about CONTENT, and for that question 2 is not a smaller 3; it is blind.
+//
+// PAIRED TEST, n=229 south runs, each scored with all 3 frames and again with
+// only its first 2 (same footage, frame count isolated):
+//   * typical run: MEDIAN DELTA +0.000, mean +0.011, 3-frame higher in 24%.
+//     -> on a quiet run the third frame is worth nothing, which is why this
+//        went unnoticed for a month.
+//   * the TAIL is where it lives:
+//        2026-08-15 Oregon 1123   0.83 -> 2.72
+//        2026-08-19 Oregon 1523   0.95 -> 2.27
+//        2026-08-12 Oregon 1523   1.26 -> 2.17
+//     THREE OF THE ARCHIVE'S TWELVE STRONGEST SIGNALS CROSS THE 2.0x BAR ONLY
+//     WITH THE THIRD FRAME. With two they read as quiet.
+//
+// => A 2-frame probe is indistinguishable from a 3-frame one on the 95% of runs
+//    where nothing happens, and cannot see the events I am actually looking for.
+//    All 339 out-of-window probe runs to date were screened by that instrument.
+// Cost: ~17 extra frames/day, ~1.5 MB. E: has 1.5 TB.
+const BURST_PROBE = 3;   // out-of-window boundary probe; see the note above
 const GAP_MS = 25_000;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -231,7 +309,28 @@ for (const id of CAMS) {
       //   >>> everything else gets UTC-, which is true of any camera anywhere.
       `${now2.stamp}MNL_${id}_${id.startsWith('octocam') ? `OREGON-${ore.hhmm}` : `UTC-${utc.hhmm}`}_s${shot}${tag}.jpg`);
     try {
-      const buf = Buffer.from(await takeSnapshot(cam), 'base64');
+      let buf = Buffer.from(await takeSnapshot(cam), 'base64');
+
+      // ---- BLANK GUARD, added 2026-09-01 ------------------------------------
+      // 17 of 2234 saved frames had no image in them: 13 pure white (mean 1.000,
+      // sd 0.000), ALL on octocam-north, nearly all the s1 shot -- the capture
+      // firing before the player paints. Three weeks of it, silently, under normal
+      // filenames. A blank is a guaranteed extreme in any difference score and a
+      // guaranteed null against another blank, so it cannot fail to distort.
+      // File size does NOT separate them (small frames span sd 0.000-0.116 against
+      // 0.091-0.337 for the rest), so this checks the pixels.
+      if (isBlank(buf)) {
+        console.log(`  ${id} shot ${shot}/${BURST}: BLANK -- retrying once`);
+        await new Promise(r => setTimeout(r, 2500));
+        buf = Buffer.from(await takeSnapshot(cam), 'base64');
+        if (isBlank(buf)) {
+          const dead = path.join(path.dirname(out), 'BLANK-' + path.basename(out));
+          writeFileSync(dead, buf);
+          console.log(`  ${id} shot ${shot}/${BURST}: STILL BLANK -> ${path.basename(dead)} (not counted)`);
+          continue;
+        }
+      }
+
       writeFileSync(out, buf);
       kept++;
       // bytes are LOGGED as evidence, never used to decide whether to keep.

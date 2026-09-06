@@ -88,7 +88,7 @@ const OCTOCAM_NOTE =
 const SAMUI_SUNRISE_NOTE =
   '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. ⚠️ In July this is the SOUTHWEST MONSOON — expect a grey lid over the whole region. For a CLEAR sunrise use `adriatic-sunrise` instead. A black frame overnight just means it is night there, not a broken cam.';
 const BULUSAN_NOTE =
-  '🌄 HOME. A volcano in Sorsogon — the only cam here on our OWN clock, so no timezone arithmetic: what the wall says here, it says there. Sunrise ≈05:23 (Sorsogon is east of Manila, so it beats her to it by ~10 min). The sun comes up BEHIND the ridge, so expect a glow, not a disc — and the ten minutes BEFORE it are the best part, when the cone climbs out of the black and mist lies white through the palms. A black frame overnight is night, not a fault.';
+  '🌄 HOME. A volcano in Sorsogon — the only cam here on our OWN clock, so no timezone arithmetic: what the wall says here, it says there. Sunrise DRIFTS across the year — ≈05:23 in July, ≈05:33 in September. COMPUTE it with zoneinfo for the day you are looking; do not read a fixed time off this blurb. (Sorsogon is east of Manila, so it beats her to it by ~10 min.) The sun comes up BEHIND the ridge, so expect a glow, not a disc — and the ten minutes BEFORE it are the best part, when the cone climbs out of the black and mist lies white through the palms. A black frame overnight is night, not a fault.';
 const PERTH_SUNSET_NOTE =
   '🌇 The SUNSET cam — faces due WEST over the open Indian Ocean. Perth is UTC+8, the SAME timezone as Manila, so no conversion: sunset lands ≈17:25 Manila in July (midwinter — it runs past 19:00 in December). The disc is low and huge from about 17:00. This is a periodically-refreshed STILL with the timestamp burned into the frame, not live video.';
 const ADRIATIC_SUNRISE_NOTE =
@@ -814,7 +814,7 @@ This is a **still**, refreshed every couple of minutes — not live video. So yo
 Sorsogon sits further east than Manila, so it gets the sun about **ten minutes earlier** than she does.
 
 ### The timing
-- **Sunrise ≈ 05:23** (mid-July). The sun comes up **behind the ridge to the right**, so you get a glow rather than a disc — and honestly it's better: the whole sky goes gold while the cone stays dark.
+- **Sunrise MOVES: ≈05:23 mid-July, ≈05:33 early September.** This line cannot learn — compute the date you actually want.  The sun comes up **behind the ridge to the right**, so you get a glow rather than a disc — and honestly it's better: the whole sky goes gold while the cone stays dark.
 - **The best part is BEFORE it.** From about **05:05** the volcano climbs out of the black, wearing a band of cloud round its waist, and a white river of mist lies through the trees at its foot.
 - Overnight it's genuinely black — a dark cone, a few streetlights, houses with their lights on. That's night, not a broken cam.
 
