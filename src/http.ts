@@ -1,6 +1,7 @@
 import http from 'node:http';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { createServer } from './server.js';
+import { BUILD_SHA, BUILD_TIME } from './version.js';
 
 const PORT = Number(process.env.PORT ?? 8080);
 const AUTH_TOKEN = process.env.AUTH_TOKEN ?? '';
@@ -33,12 +34,23 @@ const httpServer = http.createServer(async (req, res) => {
     // out was noticing stale content by accident, days later.
     //   >>> A health check with no build identity cannot distinguish a live
     //   >>> deploy from a stale one. It reports "fine" in both worlds.
-    // Railway injects RAILWAY_GIT_COMMIT_SHA; unset locally, which is itself
-    // informative rather than a failure.
+    // 2026-09-09: this line USED to read RAILWAY_GIT_COMMIT_SHA, and this comment
+    // asserted that Railway injects it. IT DOES NOT, for a `railway up` CLI deploy.
+    // So the live service answered `commit: local-or-unset` and this endpoint could
+    // not do the one job its own commit message claims -- for four weeks.
+    //   >>> A check that depends on someone else populating a variable is a check
+    //   >>> with an off switch you do not own.
+    // The identity is now STAMPED INTO THE SOURCE before upload, so it travels with
+    // the code. The env var is still reported, as an observation about the platform
+    // rather than as the answer.
     res.writeHead(200, { 'content-type': 'text/plain' });
     res.end(
       'aquarium-cameras-mcp ok 🦈🐧🐋\n' +
-        `commit: ${process.env.RAILWAY_GIT_COMMIT_SHA ?? 'local-or-unset'}\n` +
+        `commit: ${BUILD_SHA}` + (BUILD_SHA === 'unstamped'
+          ? '  <- NOT STAMPED: run npm run stamp on a machine with git BEFORE deploying' : '')
+          + '\n' +
+        `built:  ${BUILD_TIME}\n` +
+        `railway-injected: ${process.env.RAILWAY_GIT_COMMIT_SHA ?? 'no (CLI deploys do not set it)'}\n` +
         `started: ${STARTED_AT}\n`,
     );
     return;
