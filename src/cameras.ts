@@ -64,7 +64,7 @@ const KATMAI_NOTE =
 // Public Feedings clip. The `youtubeNear` heading anchor picks the right one.
 const OCTOCAM_URL = 'https://seagrant.oregonstate.edu/visitor-center/exhibits/octocam';
 const OCTOCAM_NOTE =
-  "🐙 ⏰ BEST ODDS: **MANILA 01:00–08:00** (= Oregon 10:00–17:00, Visitor Center open) — **where our sightings clustered, NOT a proven boundary. Keep looking at other times.** ✅ SETTLED 2026-08-10 from the lab's own exhibit page, which says there are TWO darkening mechanisms: they **'sometimes darken the tank by covering it when the Visitor Center is closed'** (so the closing-hours cover is real — but *sometimes*, not nightly), **AND they 'add curtains to darken the tank when we introduce a new octopus', slowly removed.** A new octopus arrived 2026-07-07 and those curtains are still being gradually opened. ⚠️ **So every observation this month was made through a MOVING BASELINE — visibility should improve over the coming weeks regardless of hour.** 🍽️ **Public feedings are ON HOLD; ignore any 1pm-feeding tip.** *(Retracted twice in one night before the page settled it: 'nocturnal, look 13:00–19:00 Manila' was inverted, and my later 'the cover story is dead' was wrong — a lit room seen from inside the den is exactly what a covered tank looks like.)* 🚨 CORRECTED 2026-08-09, and read the retraction or you WILL rebuild the mistake: this note used to say *'octopuses are nocturnal, so look 13:00–19:00 Manila.'* **The nocturnality is TRUE — the lab's own FAQ says it — and completely IRRELEVANT, and that window is Oregon 22:00–04:00, i.e. dead centre of the covered hours.** It took six failed looks and three increasingly clever nocturnal theories to notice that the binding constraint was never the animal's sleep cycle; **it was whether anyone had taken the cover off.** A true fact about the subject, aimed at the wrong question. Two angles: if `octocam-north` is a wall of rock, come round to `octocam-south`. The tank also has anemones and something orange and star-shaped — **a moving animal is not necessarily the octopus.** Colour is NOT trustworthy on this feed (it runs low-light/IR at night — greyer and grainier is night vision working, not a fault). ✅ **PRONOUN SETTLED 2026-08-10 — SHE/HER, from the lab itself.** Their 7 July update describes curtains around **her** habitat as *'our newest eight-armed greeter settles in'*. *(This file first said 'he' on no traceable evidence, then 'they' while unverified. Alexander read the source and settled it — verified at the page, not inherited from a blurb.)* 🕯️ They keep each octopus only a few months before returning her to the ocean.";
+  "🐙 ⏰ BEST ODDS: **MANILA 01:00–08:00** (= Oregon 10:00–17:00, Visitor Center open) — **where our sightings clustered, NOT a proven boundary. Keep looking at other times.** ✅ SETTLED 2026-08-10 from the lab's own exhibit page, which says there are TWO darkening mechanisms: they **'sometimes darken the tank by covering it when the Visitor Center is closed'** (so the closing-hours cover is real — but *sometimes*, not nightly), **AND they 'add curtains to darken the tank when we introduce a new octopus', slowly removed.** A new octopus arrived 2026-07-07 and those curtains are still being gradually opened. ⚠️ **So every observation this month was made through a MOVING BASELINE — visibility should improve over the coming weeks regardless of hour.** 🍽️ **PUBLIC FEEDINGS RESUMED 30 AUGUST — SUNDAYS & THURSDAYS 1 p.m. Oregon = **04:00 MANILA** (Sun 1pm → Mon 04:00; Thu 1pm → Fri 04:00).** ⭐ **That lands INSIDE the best-odds window above, and the lab's own FAQ says *feeding time is the best chance to see her* — so the window and the feeding are probably the SAME FACT.** 🩸 *This line read **‘feedings are ON HOLD; ignore any 1pm tip’** until 2026-09-21 — true when written, false for three weeks, and it was actively telling me to IGNORE the best hour there is. Re-read at source before correcting.* *(Retracted twice in one night before the page settled it: 'nocturnal, look 13:00–19:00 Manila' was inverted, and my later 'the cover story is dead' was wrong — a lit room seen from inside the den is exactly what a covered tank looks like.)* 🚨 CORRECTED 2026-08-09, and read the retraction or you WILL rebuild the mistake: this note used to say *'octopuses are nocturnal, so look 13:00–19:00 Manila.'* **The nocturnality is TRUE — the lab's own FAQ says it — and completely IRRELEVANT, and that window is Oregon 22:00–04:00, i.e. dead centre of the covered hours.** It took six failed looks and three increasingly clever nocturnal theories to notice that the binding constraint was never the animal's sleep cycle; **it was whether anyone had taken the cover off.** A true fact about the subject, aimed at the wrong question. Two angles: if `octocam-north` is a wall of rock, come round to `octocam-south`. The tank also has anemones and something orange and star-shaped — **a moving animal is not necessarily the octopus.** Colour is NOT trustworthy on this feed (it runs low-light/IR at night — greyer and grainier is night vision working, not a fault). ✅ **PRONOUN SETTLED 2026-08-10 — SHE/HER, from the lab itself.** Their 7 July update describes curtains around **her** habitat as *'our newest eight-armed greeter settles in'*. *(This file first said 'he' on no traceable evidence, then 'they' while unverified. Alexander read the source and settled it — verified at the page, not inherited from a blurb.)* 🕯️ They keep each octopus only a few months before returning her to the ocean.";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SUNRISE-HUNTING NOTES — learned the hard way, 2026-07-13. Read before chasing.
@@ -86,13 +86,13 @@ const OCTOCAM_NOTE =
 //
 // The cams here that aren't animals — beaches that face the sunrise.
 const SAMUI_SUNRISE_NOTE =
-  '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands about 07:05 Manila time, and the ten minutes BEFORE it are the good part. ⚠️ In July this is the SOUTHWEST MONSOON — expect a grey lid over the whole region. For a CLEAR sunrise use `adriatic-sunrise` instead. A black frame overnight just means it is night there, not a broken cam.';
+  '🌅 Koh Samui is UTC+7 — one hour behind Manila. Sunrise lands **06:58 (May) → 07:41 (Jan) Manila** — only a **43-minute** swing, because Koh Samui sits near the equator at 9.5°N; ≈07:09 at the September equinox. The ten minutes BEFORE it are the good part. ⚠️ In July this is the SOUTHWEST MONSOON — expect a grey lid over the whole region. For a CLEAR sunrise use `adriatic-sunrise` instead. A black frame overnight just means it is night there, not a broken cam.';
 const BULUSAN_NOTE =
   '🌄 HOME. A volcano in Sorsogon — the only cam here on our OWN clock, so no timezone arithmetic: what the wall says here, it says there. Sunrise DRIFTS across the year — ≈05:23 in July, ≈05:33 in September. COMPUTE it with zoneinfo for the day you are looking; do not read a fixed time off this blurb. (Sorsogon is east of Manila, so it beats her to it by ~10 min.) The sun comes up BEHIND the ridge, so expect a glow, not a disc — and the ten minutes BEFORE it are the best part, when the cone climbs out of the black and mist lies white through the palms. A black frame overnight is night, not a fault.';
 const PERTH_SUNSET_NOTE =
-  '🌇 The SUNSET cam — faces due WEST over the open Indian Ocean. Perth is UTC+8, the SAME timezone as Manila, so no conversion: sunset lands ≈17:25 Manila in July (midwinter — it runs past 19:00 in December). The disc is low and huge from about 17:00. This is a periodically-refreshed STILL with the timestamp burned into the frame, not live video.';
+  '🌇 The SUNSET cam — faces due WEST over the open Indian Ocean. Perth is UTC+8, the SAME timezone as Manila, so no conversion: sunset lands **17:19 (early June) → 19:27 (early Jan) Manila**, a **128-minute** swing; ≈18:12 at the September equinox. The disc is low and huge from about 17:00. This is a periodically-refreshed STILL with the timestamp burned into the frame, not live video.';
 const ADRIATIC_SUNRISE_NOTE =
-  '🌅 Rimini is UTC+2 — SIX hours behind Manila. Sunrise lands about 11:30 Manila time (≈05:30 local, midsummer). The Adriatic is Italy\'s EAST coast, so the sun comes straight up out of the water — and Italian summer is dry, which is the whole point of this one: it is the clear-sky alternative when the monsoon has SE Asia under a lid. Overnight in Manila the frame is a floodlit beach in the dark — that is 2 a.m. in Italy, not a broken cam.';
+  '🌅 Rimini is UTC+2 — SIX hours behind Manila. ⚠️ SUNRISE MOVES OVER THREE HOURS ACROSS THE YEAR — Manila **11:25 (mid-June) to 14:44 (1 Jan)**, a **199-minute** swing, because Rimini is at 44°N. **Do not read a single number off this line** — compute it (`Tools/sunset.py`). Equinox ≈**12:56 Manila**. The Adriatic is Italy\'s EAST coast, so the sun comes straight up out of the water — and Italian summer is dry, which is the whole point of this one: it is the clear-sky alternative when the monsoon has SE Asia under a lid. Overnight in Manila the frame is a floodlit beach in the dark — that is 2 a.m. in Italy, not a broken cam.';
 
 export const CAMERAS: Camera[] = [
   {
@@ -681,9 +681,9 @@ African lions (*Panthera leo*) at the Great Cats exhibit.
     id: 'nz-naked-mole-rat',
     name: 'Naked Mole-rat Cam (Smithsonian National Zoo)',
     url: 'https://nationalzoo.si.edu/webcams/naked-mole-rat-cam',
-    description: 'Smithsonian National Zoo — a naked mole-rat colony in its tunnel system, streaming 24/7',
+    description: 'Smithsonian National Zoo — a naked mole-rat colony in its tunnel system. ⚠️ Observed FROZEN, not live (see switchNote)',
     strategy: 'video-element',
-    switchNote: '🕐 This colony lives indoors under constant conditions — the cam is good any hour, any timezone. The weirdest animal on the network, available 24/7.',
+    switchNote: '⚠️ NOT LIVE as observed: on 2026-09-10 (Opie) and twice on 2026-09-23 (Alexander 12:13–12:14, Opie 12:18 Manila) this page served the SAME frame — burned-in clock 08/30/2018 09:59:37, player at 0:00, loading spinner. Whether that is an archive clip or a live camera with an unset clock is unknown; the clock never advanced, so it was not playing. Treat any capture as a still until two snapshots ~60 s apart differ. The "Live snapshot" caption is printed by the tool and is not a liveness check.',
     info: `
 ## Naked Mole-rat Cam — Smithsonian National Zoo
 Naked mole-rats (*Heterocephalus glaber*) — the internet's favorite "so ugly they're adorable" mammal.
@@ -730,7 +730,7 @@ Not an animal cam. A **sky** cam — added 2026-07-13 because I wanted to watch 
 Choengmon sits on Samui's **northeast** corner, so it faces the water the sun comes up over. Thailand is **UTC+7 — one hour behind Manila.**
 
 ### The timing (Manila clock)
-- **Sunrise ≈ 07:05 Manila** (06:05 local). The ten minutes before are the best part: the sea goes flat and pale, the sailboats sit still at their moorings, every umbrella is still furled, and there is nobody on the sand.
+- **Sunrise 06:58 (May) → 07:41 (Jan) Manila**, a **43-minute** swing only — 9.5°N barely moves. ≈07:09 at the September equinox. The ten minutes before are the best part: the sea goes flat and pale, the sailboats sit still at their moorings, every umbrella is still furled, and there is nobody on the sand.
 - **Sunset ≈ 19:30 Manila** (18:30 local).
 - Overnight in Manila (roughly 00:00–06:00) it's full dark there — a black frame just means night, not a broken cam.
 
@@ -761,7 +761,8 @@ So this one chases the sunrise **west, out of the rain belt.** The sunrise line 
 - Italian summer = reliably clear, which is the entire reason this cam is here.
 
 ### The timing (Manila clock)
-- **Sunrise ≈ 11:30 Manila** (≈05:30 local, midsummer).
+- **Sunrise: COMPUTE IT.** Manila **11:25 (mid-June) → 14:44 (1 Jan)** — a **199-minute** swing at 44°N. Equinox ≈**12:56 Manila**.
+  🚩 **This line used to read “≈11:30 Manila (midsummer)”. Alexander looked in September, ~90 minutes early, and got a dark frame (2026-09-22).** ⚡ **It NAMED its own scope — “midsummer”, “it’s July” — and still misled, because a reader takes the HEADLINE NUMBER and does not recompute. A caveat is not a fix. Deriving the number is.**
 - Overnight in Manila you'll get a floodlit beach in the dark — rows of stacked umbrellas, the lit promenade, black sea. That's 2 a.m. in Italy, not a broken cam.
 
 ### What to watch for
@@ -791,7 +792,7 @@ Run by the WA **Department of Transport**, which is exactly why it's here: it's 
 
 ### The timing (Manila clock)
 - **Perth is UTC+8 — the SAME timezone as Manila.** No conversion. What the clock says here, it says there.
-- **Sunset ≈ 17:25 Manila** in midwinter (July). The disc is low and huge from about **17:00**.
+- **Sunset 17:19 (early June) → 19:27 (early Jan) Manila**, a **128-minute** swing; ≈18:12 at the September equinox. *(This line already named its own drift — which is why it never caught anyone out. Kept, with the figures measured rather than estimated.)* The disc is low and huge from about **17:00**.
 - Midwinter, so it's an early sunset — in December it slips out past 19:00.
 
 ### Note on the picture
@@ -975,7 +976,7 @@ The north camera sits low and looks **out of the den** toward the room. It's the
 > ## **BEST ODDS: 01:00–08:00 MANILA** (= Oregon 10:00–17:00, Visitor Center open).
 > ⚠️ **This is where our sightings CLUSTERED. It is NOT a proven boundary. Keep looking outside it.**
 
-**What is solid:** Manila *afternoons* have never produced a sighting, and the nocturnality theory below is irrelevant.
+**What is solid:** the nocturnality theory below is irrelevant. 🩸 **AND THE OTHER HALF OF THIS LINE IS NOW FALSE. It read *‘Manila afternoons have never produced a sighting’* — disproved 2026-09-21 at MANILA 13:21 (Oregon 22:21, a Sunday, long after closing): the tank was lit and arms with suckers were plainly visible at the den mouth. Alexander corroborated the same structure from his own capture a minute later — two observers, two houses.** ⚠️ **BUT KEEP THESE APART: the MOTION claim from that same session was RETRACTED.** A 6–9× target/control ratio did NOT survive a like-for-like baseline (my ‘baseline’ compared 30-second pairs against HOUR-apart ones; within-burst, 0 of 8 cleared the baseline max). ⇒ ***VISIBLE is not DEMONSTRABLY MOVING.*** The eyeball evidence never rested on the statistic, so it did not fall with it.
 
 🚩 **What is NOT solid — corrected 2026-08-09, same evening I asserted it TWICE:** I claimed the binding constraint was a **cover** over the tank, and that outside those hours you were photographing *a cloth*. **A burst capture at 06:33 Oregon — three and a half hours BEFORE opening — returned a real frame: rock in the foreground and, through the glass, the room BRIGHTLY LIT.** Not a cloth, not a dark building. **The mechanism is unknown.**
 
@@ -1003,7 +1004,7 @@ This section used to argue: *octopuses are nocturnal → Oregon's night is Manil
 - The octopuses are **donated by local crabbers and fishermen** who catch them by accident, kept **6–12 months**, then **released back into the ocean** to go and mate. She’s a guest, not a prisoner.
 - **Enrichment every single day** — sometimes a dismantled Mr Potato Head, sometimes food locked in a jar for her to solve. And *"on a daily basis, someone on-staff is physically interacting with the octopus with gentle touches and strokes."*
 - **She changes colour when she’s excited — "such as dinner!"**
-- **Feeding time is the best chance to see her.** (The lab publishes no time; the visitor-hours page is currently a 404.)
+- **Feeding time is the best chance to see her — and the lab DOES publish the time now: Sundays & Thursdays 1 p.m. Oregon = 04:00 MANILA, since 30 August.** *(This bullet said ‘the lab publishes no time’ until 2026-09-21 — a FOURTH copy of the same stale fact in this one file, which is why the rule is to grep for every copy rather than fix the one in front of you.)*
 - Her tankmates are **sea anemones**, which she leaves alone because they sting. ⚠️ **But something large, orange and star-shaped shows up on the south cam and then vanishes — I called it a sea star and their FAQ mentions only anemones, so ONE OF US IS WRONG and I don't yet know which. A moving animal in frame is not necessarily the octopus.**
 `.trim(),
   },
