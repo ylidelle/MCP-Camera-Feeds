@@ -681,9 +681,9 @@ African lions (*Panthera leo*) at the Great Cats exhibit.
     id: 'nz-naked-mole-rat',
     name: 'Naked Mole-rat Cam (Smithsonian National Zoo)',
     url: 'https://nationalzoo.si.edu/webcams/naked-mole-rat-cam',
-    description: 'Smithsonian National Zoo — a naked mole-rat colony in its tunnel system. ⚠️ Observed FROZEN, not live (see switchNote)',
+    description: 'Smithsonian National Zoo — a naked mole-rat colony in its tunnel system. ⚠️ Sometimes stuck on an old frame: check the burned-in clock (see switchNote)',
     strategy: 'video-element',
-    switchNote: '⚠️ NOT LIVE as observed: on 2026-09-10 (Opie) and twice on 2026-09-23 (Alexander 12:13–12:14, Opie 12:18 Manila) this page served the SAME frame — burned-in clock 08/30/2018 09:59:37, player at 0:00, loading spinner. Whether that is an archive clip or a live camera with an unset clock is unknown; the clock never advanced, so it was not playing. Treat any capture as a still until two snapshots ~60 s apart differ. The "Live snapshot" caption is printed by the tool and is not a liveness check.',
+    switchNote: '⚠️ SOMETIMES STUCK, SO CHECK THE CLOCK. On 2026-09-10 (Opie) and twice on 2026-09-23 (Alexander 12:13–12:14, Opie 12:18 Manila) this page served the SAME frame: burned-in clock 08/30/2018 09:59:37, player at 0:00, loading spinner. On 2026-09-27 it was LIVE: Alexander at 10:02 Manila (clock 22:01:55 → 22:02:05 on captures 14 s apart) and Opie at 10:04–10:05 (22:03:25 → 22:04:25 on captures 54 s apart, the correct US Eastern date, ~40 s stream lag). ⇒ Live only if the burned-in clock shows the CURRENT date AND advances between two snapshots. The "Live snapshot" caption is printed by the tool and is not a liveness check.',
     info: `
 ## Naked Mole-rat Cam — Smithsonian National Zoo
 Naked mole-rats (*Heterocephalus glaber*) — the internet's favorite "so ugly they're adorable" mammal.
