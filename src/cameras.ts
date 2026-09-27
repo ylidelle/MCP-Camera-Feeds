@@ -18,6 +18,15 @@ export interface Camera {
   // the video id means the cam still works if they swap the stream — which is
   // the whole lesson of the six dead ISS video ids. Never bake in an id.
   youtubeNear?: string;
+  // For 'youtube-embed' when the stream lives on a YouTube CHANNEL with no partner page that embeds it (added
+  // 2026-09-27 for the Australian nest cams). Loads youtube.com/embed/live_stream?channel=<id>, which YouTube
+  // resolves to whatever that channel is streaming NOW. A channel id is stable; a video id rotates every restart,
+  // so this keeps the "never bake in an id" rule. In this mode a stream that never starts playing is REFUSED,
+  // not returned as a best-effort frame: an offline channel shows an error card, and that must not be described
+  // as a nest. ⚠️ MEASURED FLAKY the day it was written: the sea-eagle channel embed worked 1 time in 2 even with a
+  // play-button press, and two other channels refuse bare channel embeds outright (Error 153). No camera uses it
+  // as of 2026-09-27; 'video-element' on the channel's own /live page was 3 for 3 and is what the new cams use.
+  youtubeChannel?: string;
   // 'iframe' (default): screenshot the largest iframe on the page.
   // 'youtube-embed': read [data-video-id] off the page, then load the YouTube
   //   embed directly with the cam page as referer (needed when the page uses a
@@ -827,6 +836,80 @@ Sorsogon sits further east than Manila, so it gets the sun about **ten minutes e
 
 ### ⚠️ Why this one uses \`clip-region\`
 Its player is **not** a \`<video>\`, **not** a \`<canvas>\`, and **not** an \`<img>\` — I probed for all three and found nothing but the sidebar thumbnails. It renders anyway, and the timestamp advances, so it's live. **I could not identify the element, so instead of pretending I had, I clip the region.** Dumb, verified, works. If the page layout ever shifts, re-measure the rectangle.
+`.trim(),
+  },
+  // ── AUSTRALIA: nest cams on (almost) our clock. Added 2026-09-27 because Joan asked for something to watch
+  //    during OUR day; every other animal cam here is daytime while Manila sleeps. ──
+  {
+    id: 'sydney-sea-eagles',
+    name: 'White-bellied Sea-Eagle nest — Sydney Olympic Park, AUSTRALIA 🦅',
+    // The channel the official page (sea-eaglecam.org/video.html) embeds. Its own /live page, not the embed: see below.
+    url: 'https://www.youtube.com/channel/UCZss13TJZLtZ0ones3HpYMQ/live',
+    description: 'A wild White-bellied Sea-Eagle nest high in a eucalyptus: parents Lady and Dad, and two eaglets hatched in August 2026. On our clock, give or take two hours.',
+    strategy: 'video-element',
+    bufferMs: 8000,
+    switchNote: '🕐 Sydney is 2 h AHEAD of Manila until Sun 4 Oct 2026, then 3 h ahead (daylight saving) until 4 Apr 2027. Night there = infrared, black and white. The stream has gone down for whole days before (a power cut, 13 Sep 2026): a failure can mean the stream, not the tool. ⚠️ Captured from the YouTube page itself, so a pre-roll ad is possible: look before you describe.',
+    info: `
+## White-bellied Sea-Eagles — Sydney Olympic Park, Australia
+Sea-EagleCAM, run from the **BirdLife Australia Discovery Centre** at Sydney Olympic Park. The nest sits high in a eucalyptus near the Parramatta River.
+
+### This season (2026)
+- **Parents: Lady and Dad.**
+- **Eaglets: SE37 (hatched 13 Aug 2026) and SE38 (hatched 14 Aug 2026).** Dates as reported by several independent cam-watcher sources, not by me.
+- First look, 2026-09-27 22:19 Manila (00:19 Sydney): an adult standing at the top of the nest, both eaglets curled together below, feathers coming in dark and mottled. Night view, infrared.
+
+### Reading the frame
+- The **date and time are burned into the bottom right** (DD-MM-YYYY, Sydney time). Compare it with now: that's how you know it's live.
+- At night the picture is black and white. That's the infrared, not a fault.
+
+### How this cam is captured
+The official page (sea-eaglecam.org/video.html) embeds YouTube's **"live on this channel"** player. Loading that embed directly was **flaky** on 2026-09-27: it played once, then sat on a click-to-play poster, and even with a play-button press it worked 1 time in 2. So the tool opens the **channel's own /live page** on YouTube instead (3 of 3 that evening), the same way as the osprey and falcon cams. No video id is stored: the channel's /live always points at whatever is streaming. ⚠️ **A pre-roll ad could be captured instead of the nest: look before describing.**
+`.trim(),
+  },
+  {
+    id: 'port-lincoln-osprey',
+    name: 'Osprey nest on a barge — Port Lincoln, South AUSTRALIA 🐟',
+    url: 'https://www.youtube.com/@PortLincolnOsprey/live',
+    description: 'A wild osprey nest built on a barge at Port Lincoln, South Australia, on a camera that can pan and zoom. An hour and a half ahead of Manila.',
+    strategy: 'video-element',
+    bufferMs: 8000,
+    switchNote: '🕐 Port Lincoln (Adelaide time) is 1.5 h AHEAD of Manila until Sun 4 Oct 2026, then 2.5 h ahead until 4 Apr 2027. At night: dark water, town lights, a blue deck light. ⚠️ Captured from the YouTube page itself, so a pre-roll ad can occasionally be what you get: look before you describe.',
+    info: `
+## Port Lincoln Osprey — South Australia
+A wild **osprey** nest built on a **barge** on the water at Port Lincoln. The stream is titled "Port Lincoln Osprey Live Stream PTZ": the camera can pan, tilt and zoom, so the view may change between looks.
+
+### Reading the frame
+- **Date, day and time are burned into the top left** (DD-MM-YYYY Day HH:MM:SS, local time). Compare with now.
+- First look, 2026-09-27 22:21 Manila (23:51 local): night. Dark water with distant town lights, the barge deck with a rope rail and a blue light, the edge of the nest's sticks at bottom left. No osprey in view.
+- What's in the nest this season: **not yet checked.** Look in daylight before saying.
+
+### How this cam is captured
+There's no partner page that embeds it, and YouTube refuses a bare channel embed for this channel (**"Error 153, video player configuration error"**, seen 2026-09-27). So the tool opens the channel's **own /live page** on YouTube, the way any viewer would, and photographs the video. **A pre-roll ad could be captured instead of the nest: look at the frame before describing it.**
+`.trim(),
+  },
+  {
+    id: 'melbourne-falcons',
+    name: 'Peregrine Falcons — 367 Collins Street, Melbourne, AUSTRALIA 🏙️',
+    url: 'https://www.youtube.com/@367collinsfalcons4/live',
+    description: "Wild peregrine falcons nesting on a skyscraper ledge in Melbourne's city centre. Two hours ahead of Manila.",
+    strategy: 'video-element',
+    bufferMs: 8000,
+    switchNote: "🕐 Melbourne is 2 h AHEAD of Manila until Sun 4 Oct 2026, then 3 h ahead until 4 Apr 2027. The channel runs TWO views (south and north facing); this cam shows whichever YouTube serves as the channel's /live, which was SOUTH facing on 27 Sep. ⚠️ Captured from the YouTube page itself, so a pre-roll ad is possible: look before you describe.",
+    info: `
+## Peregrine Falcons — 367 Collins Street, Melbourne
+Peregrine falcons have nested on a ledge high on **367 Collins Street** in Melbourne's CBD for more than 30 years (City of Melbourne). The livestream is run by the **Victorian Peregrine Project**, founded by peregrine expert Dr Victor Hurley, in partnership with **Mirvac** (BirdLife Australia, 31 Aug 2026).
+
+### Two views
+- **South facing** (what this cam shows, as of 27 Sep 2026): the city at night, the lit tower opposite, and the building's concrete ledge on the right.
+- **North facing**: the building's stone wall reflecting the city lights, with a ledge along the left edge.
+- ⚠️ **Which view shows the scrape (the nest spot), and whether there are eggs this season: NOT CONFIRMED.** Look in daylight before saying.
+
+### Reading the frame
+- **Date and time are burned into the top left** (YYYY-MM-DD HH:MM:SS, Melbourne time). Compare with now.
+- At night the south view runs black and white.
+
+### How this cam is captured
+Opened from the channel's **own /live page** on YouTube (the channel embed was refused with Error 153 on 2026-09-27, same as the osprey). **A pre-roll ad is possible: look before describing.**
 `.trim(),
   },
   {

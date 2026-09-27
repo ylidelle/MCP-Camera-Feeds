@@ -171,6 +171,18 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
   });
   const page = await context.newPage();
 
+  // CHANNEL MODE (2026-09-27): the stream lives on a YouTube channel and no partner page embeds it by video id.
+  // YouTube's live_stream embed resolves the channel to whatever it is streaming NOW. Offline channels show an
+  // error card instead of a player, so here a stream that never advances is REFUSED rather than photographed.
+  if (camera.youtubeChannel) {
+    return captureEmbed(
+      page,
+      camera,
+      `https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(camera.youtubeChannel)}&autoplay=1&mute=1&playsinline=1`,
+      true,
+    );
+  }
+
   // 🚩 NETWORK SNIFF — added 2026-08-13, and it is the fallback that actually
   // fixes the explore.org bear cams.
   //
@@ -197,15 +209,19 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
   const sniffedIds: string[] = [];
   page.on('request', (req) => {
     const m = req.url().match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/);
-    if (m && !sniffedIds.includes(m[1])) sniffedIds.push(m[1]);
+    // 'live_stream' is not a video id: it is the channel-embed path (embed/live_stream?channel=...), and taking
+    // it as an id loads a player with the channel stripped off. Found 2026-09-27 on sea-eaglecam.org/video.html.
+    if (m && m[1] !== 'live_stream' && !sniffedIds.includes(m[1])) sniffedIds.push(m[1]);
   });
 
   await page.goto(camera.url, { waitUntil: 'domcontentloaded', timeout: 40000 });
   await page.waitForTimeout(camera.bufferMs ?? 5000); // SPA players mount late
 
   const videoId = await page.evaluate((near: string | undefined) => {
-    const idOf = (f: Element) =>
-      (f.getAttribute('src') ?? '').match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/)?.[1] ?? null;
+    const idOf = (f: Element) => {
+      const id = (f.getAttribute('src') ?? '').match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})/)?.[1] ?? null;
+      return id === 'live_stream' ? null : id; // the channel-embed path, not a video id (see the sniff above)
+    };
     const frames = [...document.querySelectorAll('iframe')].filter(idOf);
 
     // Several streams on one page: pick the one whose nearest heading ABOVE it
@@ -310,17 +326,43 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
       );
     }
   }
-  await page.goto(
-    `https://www.youtube.com/embed/${resolvedId}?autoplay=1&mute=1&playsinline=1`,
-    { waitUntil: 'domcontentloaded', timeout: 30000 }
-  );
+  return captureEmbed(page, camera, `https://www.youtube.com/embed/${resolvedId}?autoplay=1&mute=1&playsinline=1`, false);
+}
+
+// Load a YouTube embed URL, wait for real frames, screenshot the <video>. `requireLive`: refuse instead of returning a
+// best-effort frame when playback never advances (channel mode, where "not playing" usually means "not streaming").
+async function captureEmbed(page: Page, camera: Camera, embedUrl: string, requireLive: boolean): Promise<string> {
+  await page.goto(embedUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
   const video = page.locator('video').first();
-  await video.waitFor({ state: 'visible', timeout: 20000 });
+  if (requireLive) {
+    await video.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {
+      throw new Error(`${camera.name}: no video player appeared for ${embedUrl}. The channel is probably not streaming right now. Refusing to return a frame.`);
+    });
+  } else {
+    await video.waitFor({ state: 'visible', timeout: 20000 });
+  }
+
+  // Autoplay is NOT guaranteed. Seen 2026-09-27: the same sea-eagle channel embed autoplayed once, then ten minutes
+  // later sat on a black click-to-play poster (paused, readyState 0) for 30 s. If the player is still paused after it
+  // appears, press play the way a viewer would. It only acts on a PAUSED player, so embeds that already autoplay are
+  // untouched.
+  await page.waitForTimeout(3000);
+  const stillPaused = await page.evaluate(() => {
+    const v = document.querySelector('video');
+    return !v || v.paused;
+  });
+  if (stillPaused) {
+    await page.locator('.ytp-large-play-button').first().click({ timeout: 5000 }).catch(() => {});
+    await page.evaluate(() => {
+      const v = document.querySelector('video') as HTMLVideoElement | null;
+      if (v && v.paused) { v.muted = true; void v.play().catch(() => {}); }
+    });
+  }
 
   // Wait for the stream to actually RENDER FRAMES. A visible <video> can still
   // be a black box or a spinner; currentTime advancing is the only real proof.
-  await page
+  const playing = await page
     .waitForFunction(
       () => {
         const v = document.querySelector('video');
@@ -328,7 +370,12 @@ async function snapshotYouTubeEmbed(browser: Browser, camera: Camera): Promise<s
       },
       { timeout: 30000 }
     )
-    .catch(() => {}); // stalled cam still gets a best-effort frame
+    .then(() => true)
+    .catch(() => false); // stalled cam still gets a best-effort frame, except in requireLive mode
+
+  if (requireLive && !playing) {
+    throw new Error(`${camera.name}: the player loaded but playback never advanced (${embedUrl}). Not live right now, or stalled. Refusing to return a frame.`);
+  }
 
   await page.waitForTimeout(camera.bufferMs ?? 8000);
 
