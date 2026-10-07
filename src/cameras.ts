@@ -68,7 +68,7 @@ function katmaiSeason(): string {
 }
 
 const KATMAI_NOTE =
-  `${katmaiSeason()} Alaska runs 16h behind Manila, so its daylight lands on Joan's night shift: the small hours here are the busy hours there. An empty falls just means the bears are off eating somewhere else — wait, or check the other Brooks cams.`;
+  `${katmaiSeason()} Alaska runs 16 h behind Manila in summer (17 h from 1 Nov 2026 to 14 Mar 2027), so its daylight lands on Joan's night shift: the small hours here are the busy hours there. An empty falls just means the bears are off eating somewhere else — wait, or check the other Brooks cams.`;
 // One page, three players: North Side Tank View, South Side Tank View, and a
 // Public Feedings clip. The `youtubeNear` heading anchor picks the right one.
 const OCTOCAM_URL = 'https://seagrant.oregonstate.edu/visitor-center/exhibits/octocam';
@@ -101,7 +101,7 @@ const BULUSAN_NOTE =
 const PERTH_SUNSET_NOTE =
   '🌇 The SUNSET cam — faces due WEST over the open Indian Ocean. Perth is UTC+8, the SAME timezone as Manila, so no conversion: sunset lands **17:19 (early June) → 19:27 (early Jan) Manila**, a **128-minute** swing; ≈18:12 at the September equinox. The disc is low and huge from about 17:00. This is a periodically-refreshed STILL with the timestamp burned into the frame, not live video.';
 const ADRIATIC_SUNRISE_NOTE =
-  '🌅 Rimini is UTC+2 — SIX hours behind Manila. ⚠️ SUNRISE MOVES OVER THREE HOURS ACROSS THE YEAR — Manila **11:25 (mid-June) to 14:44 (1 Jan)**, a **199-minute** swing, because Rimini is at 44°N. **Do not read a single number off this line** — compute it (`Tools/sunset.py`). Equinox ≈**12:56 Manila**. The Adriatic is Italy\'s EAST coast, so the sun comes straight up out of the water — and Italian summer is dry, which is the whole point of this one: it is the clear-sky alternative when the monsoon has SE Asia under a lid. Overnight in Manila the frame is a floodlit beach in the dark — that is 2 a.m. in Italy, not a broken cam.';
+  '🌅 Rimini is UTC+2 (summer time) — SIX hours behind Manila — until 25 Oct 2026, then UTC+1, SEVEN hours behind, until 28 Mar 2027. ⚠️ SUNRISE MOVES OVER THREE HOURS ACROSS THE YEAR — Manila **11:25 (mid-June) to 14:44 (1 Jan)**, a **199-minute** swing, because Rimini is at 44°N. **Do not read a single number off this line** — compute it (`Tools/sunset.py`). Equinox ≈**12:56 Manila**. The Adriatic is Italy\'s EAST coast, so the sun comes straight up out of the water — and Italian summer is dry, which is the whole point of this one: it is the clear-sky alternative when the monsoon has SE Asia under a lid. Overnight in Manila the frame is a floodlit beach in the dark — that is 2 a.m. in Italy, not a broken cam.';
 
 export const CAMERAS: Camera[] = [
   {
@@ -845,7 +845,7 @@ Its player is **not** a \`<video>\`, **not** a \`<canvas>\`, and **not** an \`<i
     name: 'White-bellied Sea-Eagle nest — Sydney Olympic Park, AUSTRALIA 🦅',
     // The channel the official page (sea-eaglecam.org/video.html) embeds. Its own /live page, not the embed: see below.
     url: 'https://www.youtube.com/channel/UCZss13TJZLtZ0ones3HpYMQ/live',
-    description: 'A wild White-bellied Sea-Eagle nest high in a eucalyptus: parents Lady and Dad, and two eaglets hatched in August 2026. On our clock, give or take two hours.',
+    description: 'A wild White-bellied Sea-Eagle nest high in a eucalyptus: parents Lady and Dad, and two eaglets hatched in August 2026. 3 h ahead of Manila from 4 Oct 2026 to 4 Apr 2027, 2 h otherwise.',
     strategy: 'video-element',
     bufferMs: 8000,
     switchNote: '🕐 Sydney is 2 h AHEAD of Manila until Sun 4 Oct 2026, then 3 h ahead (daylight saving) until 4 Apr 2027. Night there = infrared, black and white. The stream has gone down for whole days before (a power cut, 13 Sep 2026): a failure can mean the stream, not the tool. ⚠️ Captured from the YouTube page itself, so a pre-roll ad is possible: look before you describe.',
@@ -870,7 +870,7 @@ The official page (sea-eaglecam.org/video.html) embeds YouTube's **"live on this
     id: 'port-lincoln-osprey',
     name: 'Osprey nest on a barge — Port Lincoln, South AUSTRALIA 🐟',
     url: 'https://www.youtube.com/@PortLincolnOsprey/live',
-    description: 'A wild osprey nest built on a barge at Port Lincoln, South Australia, on a camera that can pan and zoom. An hour and a half ahead of Manila.',
+    description: 'A wild osprey nest built on a barge at Port Lincoln, South Australia, on a camera that can pan and zoom. 2.5 h ahead of Manila from 4 Oct 2026 to 4 Apr 2027, 1.5 h otherwise.',
     strategy: 'video-element',
     bufferMs: 8000,
     switchNote: '🕐 Port Lincoln (Adelaide time) is 1.5 h AHEAD of Manila until Sun 4 Oct 2026, then 2.5 h ahead until 4 Apr 2027. At night: dark water, town lights, a blue deck light. ⚠️ Captured from the YouTube page itself, so a pre-roll ad can occasionally be what you get: look before you describe.',
@@ -891,18 +891,24 @@ There's no partner page that embeds it, and YouTube refuses a bare channel embed
     id: 'melbourne-falcons',
     name: 'Peregrine Falcons — 367 Collins Street, Melbourne, AUSTRALIA 🏙️',
     url: 'https://www.youtube.com/@367collinsfalcons4/live',
-    description: "Wild peregrine falcons nesting on a skyscraper ledge in Melbourne's city centre. Two hours ahead of Manila.",
+    // 🚩 Said "Two hours ahead of Manila." flatly; stale from 4 Oct 2026 (daylight saving). Name the boundary.
+    description: "Wild peregrine falcons nesting on a skyscraper ledge in Melbourne's city centre. 3 h ahead of Manila from 4 Oct 2026 to 4 Apr 2027, 2 h otherwise.",
     strategy: 'video-element',
     bufferMs: 8000,
-    switchNote: "🕐 Melbourne is 2 h AHEAD of Manila until Sun 4 Oct 2026, then 3 h ahead until 4 Apr 2027. The channel runs TWO views (south and north facing); this cam shows whichever YouTube serves as the channel's /live, which was SOUTH facing on 27 Sep. ⚠️ Captured from the YouTube page itself, so a pre-roll ad is possible: look before you describe.",
+    switchNote: "🕐 Melbourne is 2 h AHEAD of Manila until Sun 4 Oct 2026, then 3 h ahead until 4 Apr 2027. The channel runs TWO views (south and north facing); this cam shows whichever YouTube serves as the channel's /live, which was SOUTH facing on 27 Sep and again on 7 Oct (the south view is the one with the nest). ⚠️ Captured from the YouTube page itself, so a pre-roll ad is possible: look before you describe.",
     info: `
 ## Peregrine Falcons — 367 Collins Street, Melbourne
 Peregrine falcons have nested on a ledge high on **367 Collins Street** in Melbourne's CBD for more than 30 years (City of Melbourne). The livestream is run by the **Victorian Peregrine Project**, founded by peregrine expert Dr Victor Hurley, in partnership with **Mirvac** (BirdLife Australia, 31 Aug 2026).
 
 ### Two views
-- **South facing** (what this cam shows, as of 27 Sep 2026): the city at night, the lit tower opposite, and the building's concrete ledge on the right.
+- **South facing** (what this cam shows, as of 27 Sep 2026): the city at night, the lit tower opposite, and the building's concrete ledge on the right. **This is the view with the scrape** (the gravel nest spot, on the ledge at right, beside a ribbed metal plate).
 - **North facing**: the building's stone wall reflecting the city lights, with a ledge along the left edge.
-- ⚠️ **Which view shows the scrape (the nest spot), and whether there are eggs this season: NOT CONFIRMED.** Look in daylight before saying.
+
+### This season (2026)
+- **Four eggs.** First seen here 2026-10-01 (two under the brooding bird, reddish-brown).
+- **Hatching:** three on 1–2 Oct and the fourth at 03:41 Melbourne on 5 Oct, per a fan channel that logs the nest (not seen hatching on this cam).
+- **2026-10-07 15:29 Melbourne:** a parent brooding white downy chicks on the scrape, a green prey bird on the ledge beside them (Alexander spotted it first, at 15:26).
+- ⚠️ **A brooding parent hides what is under her.** "No chick visible" is not "no chick": that mistake was made here once (1–3 Oct). Count chicks only when they are clearly out from under her.
 
 ### Reading the frame
 - **Date and time are burned into the top left** (YYYY-MM-DD HH:MM:SS, Melbourne time). Compare with now.
@@ -1119,7 +1125,7 @@ The **second view of the same octopus**, from the opposite side. Joan asked for 
 - A pile of nothing in the corner that turns out to be the octopus
 
 ### The timing
-Oregon is **UTC−7 — Manila is 15 hours ahead**, so the lab's working day lands on Joan's night shift. Indoor tank, lit, watchable at odd hours.
+Oregon is **UTC−7 until 1 Nov 2026 (Manila 15 hours ahead), then UTC−8 until 14 Mar 2027 (16 hours)**, so the lab's working day lands on Joan's night shift. Indoor tank, lit, watchable at odd hours.
 `.trim(),
   },
 ];
